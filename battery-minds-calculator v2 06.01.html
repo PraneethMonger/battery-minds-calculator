@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Battery Minds Calculator — SP1.0.0</title>
+<style>
+/* ═══════════════════════════════════════════════════════
+   BATTERY MINDS CALCULATOR — SP1.0.0
+   Designed & Developed by Kalangi Sai Praneeth with AI
+   LinkedIn-Blue Professional Theme
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --li-blue:#0077b5;
+  --li-dark:#005f8e;
+  --li-light:#e8f4fd;
+  --li-mid:#cce4f4;
+  --white:#ffffff;
+  --ink:#0d1e2e;
+  --ink2:#2c4f6a;
+  --ink3:#5a7f9a;
+  --border:#b8d8ed;
+  --border2:#7ab4d4;
+  --card:#ffffff;
+  --bg:#eaf4fc;
+  --bg2:#f5faff;
+  --ok:#16a34a;--ok-bg:#dcfce7;--ok-b:#86efac;
+  --warn:#d97706;--warn-bg:#fef3c7;--warn-b:#fcd34d;
+  --err:#dc2626;--err-bg:#fee2e2;--err-b:#fca5a5;
+  --shadow:0 2px 12px rgba(0,119,181,.13);
+  --shadow2:0 4px 24px rgba(0,119,181,.18);
+}
+[data-theme="dark"]{
+  --li-blue:#0a84c8;
+  --li-dark:#0062a0;
+  --li-light:#0d1e30;
+  --li-mid:#0f2840;
+  --white:#e4f0fa;
+  --ink:#d8ecfa;
+  --ink2:#8ab8d8;
+  --ink3:#4a7898;
+  --border:#1a3550;
+  --border2:#245070;
+  --card:#0d1e30;
+  --bg:#080f18;
+  --bg2:#0a1624;
+  --ok:#22c97a;--ok-bg:rgba(34,201,122,.12);--ok-b:rgba(34,201,122,.4);
+  --warn:#f0a24a;--warn-bg:rgba(240,162,74,.12);--warn-b:rgba(240,162,74,.4);
+  --err:#f05c4a;--err-bg:rgba(240,92,74,.12);--err-b:rgba(240,92,74,.4);
+  --shadow:0 2px 14px rgba(0,0,0,.5);
+  --shadow2:0 4px 28px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI',system-ui,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);
+  min-height:100vh;line-height:1.7;
+  font-weight:500;
+}
+
+/* ─── LOGIN ─── */
+#login-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(135deg,var(--li-dark) 0%,#004a70 50%,var(--li-blue) 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.login-box{
+  background:var(--white);border-radius:18px;padding:44px 52px;
+  width:400px;max-width:96vw;box-shadow:0 32px 80px rgba(0,0,0,.4);
+  text-align:center;
+}
+.login-logo{font-size:2rem;font-weight:900;color:var(--li-blue);letter-spacing:-.03em;margin-bottom:2px}
+.login-logo span{color:var(--li-dark)}
+.login-sub{font-size:.8rem;color:#888;margin-bottom:30px;font-weight:600;letter-spacing:.06em}
+.login-box .lf{margin-bottom:16px;text-align:left}
+.login-box label{font-size:.85rem;font-weight:700;color:#444;display:block;margin-bottom:5px}
+.login-box input{
+  width:100%;padding:11px 14px;border-radius:9px;
+  border:2px solid #dde;background:#f8faff;
+  color:#222;font-size:.95rem;outline:none;font-weight:600;
+  transition:border-color .15s,box-shadow .15s;
+}
+.login-box input:focus{border-color:var(--li-blue);box-shadow:0 0 0 3px rgba(0,119,181,.18)}
+.login-err{color:#dc2626;font-size:.8rem;margin-top:8px;min-height:18px;font-weight:700}
+.btn-login{
+  width:100%;padding:13px;border-radius:9px;border:none;
+  background:var(--li-blue);color:#fff;font-size:1rem;font-weight:800;
+  cursor:pointer;margin-top:10px;letter-spacing:.02em;
+  transition:background .18s,transform .1s;
+}
+.btn-login:hover{background:var(--li-dark)}
+.btn-login:active{transform:scale(.98)}
+
+/* ─── TOPBAR ─── */
+.top-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:58px;
+  background:var(--li-blue);
+  box-shadow:var(--shadow2);
+  position:sticky;top:0;z-index:100;
+  gap:12px;flex-wrap:nowrap;
+}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;border:2px solid rgba(255,255,255,.35);
+}
+.logo-text{font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-.02em;white-space:nowrap}
+.logo-ver{
+  font-size:.62rem;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);
+  border-radius:4px;padding:2px 8px;color:#fff;font-weight:700;letter-spacing:.08em;
+}
+.top-right{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+#user-display{font-size:.76rem;color:rgba(255,255,255,.85);font-weight:700;white-space:nowrap}
+
+.btn{
+  font-size:.76rem;font-weight:700;padding:7px 14px;border-radius:7px;
+  border:2px solid rgba(255,255,255,.45);background:rgba(255,255,255,.15);
+  color:#fff;cursor:pointer;transition:all .16s;white-space:nowrap;
+  letter-spacing:.02em;
+}
+.btn:hover{background:rgba(255,255,255,.28);border-color:rgba(255,255,255,.7)}
+.btn-ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn-ok:hover{filter:brightness(1.1)}
+.btn-warn{background:#0a84c8;border-color:#0a84c8;color:#fff}
+.btn-warn:hover{filter:brightness(1.1)}
+.btn-err{background:#dc2626;border-color:#dc2626;color:#fff}
+.btn-err:hover{filter:brightness(1.1)}
+
+.li-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:7px;
+  background:#fff;text-decoration:none;flex-shrink:0;
+  transition:transform .15s,box-shadow .15s;
+}
+.li-btn:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.li-btn svg{fill:var(--li-blue)}
+
+/* ─── LAYOUT ─── */
+.main-wrap{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 58px)}
+.sidebar{
+  background:var(--card);border-right:2px solid var(--border);
+  padding:16px 0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;
+}
+.sb-label{
+  font-size:.66rem;font-weight:800;letter-spacing:.16em;
+  color:var(--li-blue);text-transform:uppercase;
+  padding:12px 18px 4px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:9px;
+  padding:11px 18px;cursor:pointer;font-size:.85rem;
+  font-weight:600;color:var(--ink2);
+  border-left:4px solid transparent;transition:all .14s;
+}
+.nav-item:hover{background:var(--li-light);color:var(--li-blue)}
+.nav-item.active{
+  background:var(--li-light);color:var(--li-blue);
+  border-left-color:var(--li-blue);font-weight:800;
+}
+.nav-num{
+  font-size:.6rem;font-weight:800;
+  background:var(--li-light);border:1px solid var(--border);
+  border-radius:4px;padding:1px 6px;margin-left:auto;
+  color:var(--ink3);
+}
+.nav-item.active .nav-num{background:var(--li-blue);color:#fff;border-color:var(--li-blue)}
+
+.content{padding:24px 28px;overflow-y:auto}
+
+/* ─── MODULES ─── */
+.module{display:none;animation:fadeIn .22s ease}
+.module.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.mod-header{
+  background:linear-gradient(135deg,var(--li-blue) 0%,var(--li-dark) 100%);
+  border-radius:12px;padding:20px 24px;margin-bottom:22px;
+  box-shadow:var(--shadow);
+}
+.mod-title{
+  font-size:1.5rem;font-weight:900;color:#fff;
+  display:flex;align-items:center;gap:10px;letter-spacing:-.02em;
+}
+.mod-badge{
+  font-size:.62rem;font-weight:800;letter-spacing:.12em;
+  padding:3px 10px;border-radius:5px;
+  background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);
+  color:#fff;
+}
+.mod-desc{font-size:.88rem;color:rgba(255,255,255,.85);margin-top:6px;font-weight:500}
+.credit-tag{
+  display:inline-flex;align-items:center;gap:5px;margin-top:9px;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  border-radius:5px;padding:4px 12px;font-size:.72rem;font-weight:700;color:#fff;
+}
+
+/* ─── CARDS ─── */
+.card{
+  background:var(--card);border:2px solid var(--border);
+  border-radius:12px;padding:20px;margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+.card-title{
+  font-size:.85rem;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--li-blue);
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+  border-bottom:2px solid var(--border);padding-bottom:10px;
+}
+.card-title .ct-icon{
+  width:28px;height:28px;border-radius:6px;
+  background:var(--li-blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;
+}
+.card-title.anode{color:#7c3aed}
+.card-title.anode .ct-icon{background:#7c3aed}
+.card-title.cell{color:#0891b2}
+.card-title.cell .ct-icon{background:#0891b2}
+
+/* ─── GLOBAL CHEM BAR ─── */
+.chem-bar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:var(--card);border:2px solid var(--li-blue);border-radius:10px;
+  padding:12px 18px;margin-bottom:20px;box-shadow:var(--shadow);
+}
+.chem-bar label{font-size:.8rem;font-weight:800;color:var(--li-blue);white-space:nowrap}
+.chem-bar select,.chem-bar input{
+  background:var(--bg2);border:2px solid var(--border);color:var(--ink);
+  font-size:.85rem;font-weight:600;padding:7px 11px;
+  border-radius:7px;outline:none;font-family:inherit;
+}
+.chem-bar select:focus,.chem-bar input:focus{border-color:var(--li-blue)}
+
+/* ─── GRIDS ─── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g22{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ─── FIELDS ─── */
+.field{margin-bottom:13px}
+.field label{
+  display:flex;align-items:center;gap:5px;
+  font-size:.82rem;font-weight:700;color:var(--ink2);margin-bottom:5px;
+}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--bg2);border:2px solid var(--border);
+  border-radius:8px;color:var(--ink);font-size:.9rem;font-weight:600;
+  padding:9px 12px;outline:none;transition:border-color .15s,box-shadow .15s;
+  font-family:inherit;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--li-blue);box-shadow:0 0 0 3px rgba(0,119,181,.14);
+}
+.field input[readonly]{
+  background:var(--li-light);color:var(--ink3);
+  border-style:dashed;cursor:default;
+}
+.field textarea{resize:vertical;min-height:60px}
+.field select option{background:var(--card)}
+
+/* ─── SECTION HEADING ─── */
+.sh{
+  font-size:1rem;font-weight:900;color:var(--li-blue);
+  margin:16px 0 10px;padding-bottom:6px;
+  border-bottom:2px solid var(--li-mid);
+  display:flex;align-items:center;gap:7px;letter-spacing:-.01em;
+}
+
+/* ─── RESULTS ─── */
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px;margin-top:14px}
+.ri{
+  background:linear-gradient(135deg,var(--li-light) 0%,var(--bg2) 100%);
+  border:2px solid var(--border);border-radius:10px;padding:14px 16px;
+  transition:box-shadow .15s;
+}
+.ri:hover{box-shadow:var(--shadow)}
+.ri-label{font-size:.72rem;color:var(--ink3);margin-bottom:4px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.ri-value{font-size:1.25rem;font-weight:900;color:var(--li-blue);line-height:1.2}
+.ri-value.anode{color:#7c3aed}
+.ri-value.cell{color:#0891b2}
+.ri-unit{font-size:.7rem;color:var(--ink3);margin-top:3px;font-weight:600}
+.ri-status{font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:4px;margin-top:6px;display:inline-block}
+.s-ok{background:var(--ok-bg);border:1px solid var(--ok-b);color:var(--ok)}
+.s-warn{background:var(--warn-bg);border:1px solid var(--warn-b);color:var(--warn)}
+.s-err{background:var(--err-bg);border:1px solid var(--err-b);color:var(--err)}
+
+/* ─── FORMULA BOX ─── */
+.fbox{
+  background:var(--bg2);border:2px solid var(--border);border-radius:9px;
+  padding:14px 17px;margin-top:14px;
+}
+.fbox-title{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;font-weight:800}
+.fbox code{
+  display:block;color:var(--li-blue);font-size:.82rem;padding:3px 0;
+  font-family:'Courier New','Consolas',monospace;font-weight:700;
+}
+
+/* ─── REC BOXES ─── */
+.rec{border-radius:9px;padding:14px 17px;margin-top:12px;font-size:.85rem;font-weight:600}
+.rec strong{display:block;font-size:.82rem;font-weight:900;margin-bottom:5px}
+.rec-ok{background:var(--ok-bg);border:2px solid var(--ok-b);color:var(--ok)}
+.rec-warn{background:var(--warn-bg);border:2px solid var(--warn-b);color:var(--warn)}
+.rec-err{background:var(--err-bg);border:2px solid var(--err-b);color:var(--err)}
+
+/* ─── AREA BADGE ─── */
+.area-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--li-light);border:2px solid var(--li-blue);
+  border-radius:7px;padding:5px 12px;font-size:.78rem;font-weight:700;
+  color:var(--li-blue);margin-bottom:13px;
+}
+
+/* ─── P/N DISPLAY ─── */
+.pn-display{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px;border-radius:14px;border:3px solid var(--border);
+  margin-top:16px;gap:7px;transition:all .3s;
+}
+.pn-number{font-size:3.4rem;font-weight:900;line-height:1}
+.pn-lbl{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75;font-weight:700}
+.pn-stat{font-size:.92rem;font-weight:800}
+.pn-red{border-color:var(--err);background:var(--err-bg);color:var(--err)}
+.pn-yellow{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
+.pn-green{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.pn-blue{border-color:#0891b2;background:#ecfeff;color:#0891b2}
+[data-theme="dark"] .pn-blue{background:rgba(8,145,178,.1)}
+
+/* ─── SUMMARY ─── */
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sum-card{background:var(--card);border:2px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.sum-header{padding:13px 18px;font-size:1rem;font-weight:900;display:flex;align-items:center;gap:8px;color:#fff}
+.sum-h-cat{background:var(--li-blue)}
+.sum-h-ano{background:#7c3aed}
+.sum-h-bal{background:var(--li-dark)}
+.sum-body{padding:14px 18px}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.sum-row:last-child{border:none}
+.sum-row .sk{color:var(--ink2);font-weight:600}
+.sum-row .sv{font-weight:800;color:var(--ink)}
+
+/* ─── MATERIAL TABLE ─── */
+.mat-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.mat-table th{
+  text-align:left;padding:10px 13px;font-size:.7rem;
+  letter-spacing:.09em;text-transform:uppercase;
+  color:#fff;background:var(--li-blue);
+}
+.mat-table th:first-child{border-radius:7px 0 0 0}
+.mat-table th:last-child{border-radius:0 7px 0 0}
+.mat-table td{padding:10px 13px;border-bottom:1px solid var(--border);font-weight:600}
+.mat-table tr:hover td{background:var(--li-light)}
+.dbar{display:inline-block;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--li-blue),#7c3aed);vertical-align:middle;margin-left:8px;opacity:.6}
+
+/* ─── SMART TIP ─── */
+.smart-tip{
+  font-size:.78rem;font-weight:700;color:var(--li-blue);
+  background:var(--li-light);border:2px solid var(--li-blue);
+  border-radius:6px;padding:5px 11px;margin-top:4px;display:none;
+}
+.smart-tip.show{display:block}
+
+/* ─── TOOLTIP ─── */
+.tip{position:relative;cursor:help;color:var(--ink3);font-size:.82rem;font-weight:700}
+.tip::after{
+  content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);
+  bottom:calc(100% + 8px);background:var(--li-dark);border:1px solid var(--li-blue);
+  color:#fff;font-size:.72rem;border-radius:7px;padding:6px 12px;
+  white-space:pre-wrap;max-width:260px;text-align:center;
+  opacity:0;pointer-events:none;transition:opacity .15s;z-index:60;font-weight:600;
+}
+.tip:hover::after{opacity:1}
+
+/* ─── ABOUT ─── */
+.about-section{max-width:760px}
+.about-card{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:var(--shadow)}
+.about-card h3{font-size:1rem;font-weight:900;color:var(--li-blue);margin-bottom:10px}
+.about-card p{font-size:.88rem;color:var(--ink2);line-height:1.75;margin-bottom:8px;font-weight:500}
+.about-card ul{margin-left:18px;font-size:.85rem;color:var(--ink2);line-height:1.9;font-weight:500}
+.ref-item{padding:8px 0;border-bottom:1px solid var(--border);font-size:.83rem;color:var(--ink2);font-weight:500}
+.ref-item:last-child{border:none}
+.ref-item strong{color:var(--ink);font-weight:800}
+
+/* ─── STACK VISUAL ─── */
+.stack-visual{margin-top:16px}
+.stack-visual-title{font-size:.75rem;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.stack-layer{
+  display:flex;align-items:center;gap:12px;margin-bottom:4px;
+  padding:8px 14px;border-radius:7px;font-size:.82rem;font-weight:700;
+}
+.stack-layer .sl-name{flex:1;color:var(--ink)}
+.stack-layer .sl-thick{font-weight:900;color:var(--li-blue);min-width:60px;text-align:right}
+.stack-layer .sl-bar{height:12px;border-radius:6px;flex-shrink:0}
+
+/* ─── MOBILE ─── */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--li-blue);border-top:2px solid var(--li-dark);z-index:200;overflow-x:auto;padding:7px 10px;gap:5px}
+@media(max-width:900px){
+  .main-wrap{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .g2,.g3{grid-template-columns:1fr}
+  .sum-grid{grid-template-columns:1fr}
+  .mob-nav{display:flex}
+  .content{padding-bottom:72px}
+}
+.mob-btn{font-size:.65rem;font-weight:800;padding:7px 11px;border-radius:6px;border:2px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.mob-btn.active{background:#fff;color:var(--li-blue);border-color:#fff}
+
+/* ─── TOAST ─── */
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--li-dark);color:#fff;font-size:.82rem;font-weight:700;border-radius:9px;padding:11px 24px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:500;box-shadow:var(--shadow2)}
+#toast.show{opacity:1}
+
+/* ─── REMARKS ─── */
+.rem-box{margin-top:14px}
+.rem-box label{font-size:.8rem;font-weight:800;color:var(--ink2);display:block;margin-bottom:5px}
+
+/* ─── SEPARATOR LINE ─── */
+.sep-line{border:none;border-top:2px solid var(--border);margin:18px 0}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">⚡ Battery<span> Minds</span></div>
+    <div class="login-sub">CALCULATOR · SP1.0.0 · BY KSP</div>
+    <div class="lf"><label>Username</label><input type="text" id="l-user" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="lf"><label>Password</label><input type="password" id="l-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="login-err" id="l-err"></div>
+    <button class="btn-login" onclick="doLogin()">Login to Battery Minds</button>
+  </div>
+</div>
+
+<!-- ═══ TOPBAR ═══ -->
+<div class="top-bar">
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Battery Minds Calculator</div>
+    <span class="logo-ver">SP1.0.0</span>
+  </div>
+  <div class="top-right">
+    <span id="user-display"></span>
+    <a href="https://www.linkedin.com/in/kalangisaipraneet" target="_blank" rel="noopener noreferrer" class="li-btn" title="Kalangi Sai Praneeth on LinkedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+    </a>
+    <button class="btn" onclick="toggleTheme()">☀/☾</button>
+    <button class="btn btn-ok" onclick="exportCSV()">↓ CSV</button>
+    <button class="btn btn-warn" onclick="exportExcel()">↓ Excel</button>
+    <button class="btn" onclick="exportPDF()">↓ PDF</button>
+    <button class="btn btn-err" onclick="resetAll()">↺ Reset</button>
+  </div>
+</div>
+
+<!-- ═══ LAYOUT ═══ -->
+<div class="main-wrap">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-label">Electrode</div>
+  <div class="nav-item active" onclick="nav(0,this)"><span>⚖</span> Disc Weight<span class="nav-num">1</span></div>
+  <div class="nav-item" onclick="nav(1,this)"><span>⬛</span> Density<span class="nav-num">2</span></div>
+  <div class="nav-item" onclick="nav(2,this)"><span>◎</span> Porosity<span class="nav-num">3</span></div>
+  <div class="nav-item" onclick="nav(3,this)"><span>↗</span> Loading<span class="nav-num">4</span></div>
+  <div class="sb-label">Cell</div>
+  <div class="nav-item" onclick="nav(4,this)"><span>⚡</span> N/P Ratio<span class="nav-num">5</span></div>
+  <div class="nav-item" onclick="nav(5,this)"><span>📏</span> Pouch Design<span class="nav-num">6</span></div>
+  <div class="nav-item" onclick="nav(6,this)"><span>🔩</span> Cylindrical<span class="nav-num">7</span></div>
+  <div class="sb-label">Reference</div>
+  <div class="nav-item" onclick="nav(7,this)"><span>📋</span> Materials DB<span class="nav-num">8</span></div>
+  <div class="nav-item" onclick="nav(8,this)"><span>📊</span> Summary<span class="nav-num">9</span></div>
+  <div class="nav-item" onclick="nav(9,this)"><span>📖</span> About</div>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- CHEM BAR -->
+<div class="chem-bar">
+  <label>⚗ Chemistry:</label>
+  <select id="g-chem" onchange="onChemChange()">
+    <option value="LFP">LFP (Default)</option>
+    <option value="NMC">NMC</option>
+    <option value="LTO">LTO</option>
+    <option value="LFP-LTO">LFP-LTO Full Cell</option>
+    <option value="NaIon">Sodium-Ion</option>
+    <option value="Si">Silicon-Based</option>
+    <option value="SolidState">Solid-State</option>
+    <option value="Supercap">Supercapacitor</option>
+    <option value="Custom">Custom</option>
+  </select>
+  <label>🔬 Exp #:</label>
+  <input type="text" id="g-expnum" placeholder="EXP-001" style="width:90px">
+  <label>📝 Name:</label>
+  <input type="text" id="g-expname" placeholder="Experiment name" style="width:160px">
+  <label>👤 User:</label>
+  <input type="text" id="g-user" placeholder="Your name" style="width:120px">
+</div>
+
+<!-- ════ MOD 1: DISC WEIGHT ════ -->
+<div class="module active" id="mod-0">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 01</span> Electrode Disc Weight Analysis</div>
+    <div class="mod-desc">Enter up to 5 disc weights. Select diameter from dropdown — area is auto-computed. Results feed automatically into Density and Loading modules.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="g2">
+    <!-- CATHODE -->
+    <div class="card">
+      <div class="card-title"><div class="ct-icon">C</div> Cathode Disc</div>
+      <div class="field"><label>Disc Diameter <span class="tip" data-tip="Standard cathode disc sizes">ⓘ</span></label>
+        <select id="c-diam" onchange="calcM1()">
+          <option value="12">12 mm</option><option value="14" selected>14 mm</option>
+          <option value="16">16 mm</option><option value="19">19 mm</option><option value="21">21 mm</option>
+        </select>
+      </div>
+      <div class="area-badge" id="area-c-badge">Area: <strong id="area-c">1.5394 cm²</strong></div>
+      <div class="sh">Average Disc Weight</div>
+      <div class="g22">
+        <div class="field"><label>Disc 1 (mg)</label><input type="number" step="0.01" id="c-w1" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 2 (mg)</label><input type="number" step="0.01" id="c-w2" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 3 (mg)</label><input type="number" step="0.01" id="c-w3" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 4 (mg)</label><input type="number" step="0.01" id="c-w4" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 5 (mg)</label><input type="number" step="0.01" id="c-w5" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Empty Al Foil (mg)</label><input type="number" step="0.01" id="c-foil" oninput="calcM1()" placeholder="—"></div>
+      </div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Average Weight</div><div class="ri-value" id="c-avg">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Std Dev</div><div class="ri-value" id="c-std">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Coating Weight</div><div class="ri-value" id="c-coat">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Loading</div><div class="ri-value" id="c-load">—</div><div class="ri-unit">mg/cm²</div><div id="c-load-s"></div></div>
+      </div>
+      <div id="c-rec1" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>Coating = Avg − Foil</code><code>Loading = Coating / Area</code><code>Area = π × (d/2)²</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="c-rem1" placeholder="Notes for cathode measurement…"></textarea></div>
+    </div>
+    <!-- ANODE -->
+    <div class="card">
+      <div class="card-title anode"><div class="ct-icon">A</div> Anode Disc</div>
+      <div class="field"><label>Disc Diameter</label>
+        <select id="a-diam" onchange="calcM1()">
+          <option value="12">12 mm</option><option value="14">14 mm</option>
+          <option value="16" selected>16 mm</option><option value="19">19 mm</option><option value="21">21 mm</option>
+        </select>
+      </div>
+      <div class="area-badge" id="area-a-badge">Area: <strong id="area-a">2.0106 cm²</strong></div>
+      <div class="sh">Average Disc Weight</div>
+      <div class="g22">
+        <div class="field"><label>Disc 1 (mg)</label><input type="number" step="0.01" id="a-w1" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 2 (mg)</label><input type="number" step="0.01" id="a-w2" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 3 (mg)</label><input type="number" step="0.01" id="a-w3" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 4 (mg)</label><input type="number" step="0.01" id="a-w4" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Disc 5 (mg)</label><input type="number" step="0.01" id="a-w5" oninput="calcM1()" placeholder="—"></div>
+        <div class="field"><label>Empty Cu Foil (mg)</label><input type="number" step="0.01" id="a-foil" oninput="calcM1()" placeholder="—"></div>
+      </div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Average Weight</div><div class="ri-value anode" id="a-avg">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Std Dev</div><div class="ri-value anode" id="a-std">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Coating Weight</div><div class="ri-value anode" id="a-coat">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Loading</div><div class="ri-value anode" id="a-load">—</div><div class="ri-unit">mg/cm²</div><div id="a-load-s"></div></div>
+      </div>
+      <div id="a-rec1" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>Coating = Avg − Foil</code><code>Loading = Coating / Area</code><code>Area = π × (d/2)²</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="a-rem1" placeholder="Notes for anode measurement…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MOD 2: DENSITY ════ -->
+<div class="module" id="mod-1">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 02</span> Electrode Density Calculator</div>
+    <div class="mod-desc">Compute coating and electrode density from mass and thickness. Auto-filled from Module 1. Results propagate to Porosity.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><div class="ct-icon">C</div> Cathode Density</div>
+      <div class="field"><label>Avg Disc Weight (mg) <span class="tip" data-tip="Auto-filled from Module 1">ⓘ</span></label><input type="number" id="d-c-avg" oninput="calcM2()"></div>
+      <div class="field"><label>Empty Al Foil (mg)</label><input type="number" id="d-c-foil" oninput="calcM2()"></div>
+      <div class="field"><label>Electrode Thickness (µm) <span class="tip" data-tip="Total measured by micrometer">ⓘ</span></label><input type="number" id="d-c-thick" placeholder="e.g. 85" oninput="calcM2()"></div>
+      <div class="field"><label>Al Foil Thickness (µm) <span class="tip" data-tip="Typical: 12–20 µm">ⓘ</span></label><input type="number" id="d-c-foilthick" placeholder="e.g. 15" oninput="calcM2()"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Coating Density</div><div class="ri-value" id="dc-coat">—</div><div class="ri-unit">g/cm³</div><div id="dc-coat-s"></div></div>
+        <div class="ri"><div class="ri-label">Electrode Density</div><div class="ri-value" id="dc-elec">—</div><div class="ri-unit">g/cm³</div></div>
+        <div class="ri"><div class="ri-label">Coating Thickness</div><div class="ri-value" id="dc-cthick">—</div><div class="ri-unit">µm</div></div>
+      </div>
+      <div id="dc-rec" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>Coat Thick = Elec Thick − Foil Thick [µm]</code>
+        <code>Coat Vol = Area × Coat Thick × 10⁻⁴ [cm³]</code>
+        <code>Coat Density = (Avg − Foil)/1000 / Coat Vol [g/cm³]</code>
+        <code>Elec Density = Avg/1000 / (Area × Elec Thick × 10⁻⁴)</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="c-rem2" placeholder="Notes on cathode density…"></textarea></div>
+    </div>
+    <div class="card">
+      <div class="card-title anode"><div class="ct-icon">A</div> Anode Density</div>
+      <div class="field"><label>Avg Disc Weight (mg)</label><input type="number" id="d-a-avg" oninput="calcM2()"></div>
+      <div class="field"><label>Empty Cu Foil (mg)</label><input type="number" id="d-a-foil" oninput="calcM2()"></div>
+      <div class="field"><label>Electrode Thickness (µm)</label><input type="number" id="d-a-thick" placeholder="e.g. 65" oninput="calcM2()"></div>
+      <div class="field"><label>Cu Foil Thickness (µm) <span class="tip" data-tip="Typical: 8–12 µm">ⓘ</span></label><input type="number" id="d-a-foilthick" placeholder="e.g. 10" oninput="calcM2()"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Coating Density</div><div class="ri-value anode" id="da-coat">—</div><div class="ri-unit">g/cm³</div><div id="da-coat-s"></div></div>
+        <div class="ri"><div class="ri-label">Electrode Density</div><div class="ri-value anode" id="da-elec">—</div><div class="ri-unit">g/cm³</div></div>
+        <div class="ri"><div class="ri-label">Coating Thickness</div><div class="ri-value anode" id="da-cthick">—</div><div class="ri-unit">µm</div></div>
+      </div>
+      <div id="da-rec" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>Coat Thick = Elec Thick − Foil Thick [µm]</code>
+        <code>Coat Vol = Area × Coat Thick × 10⁻⁴ [cm³]</code>
+        <code>Coat Density = (Avg − Foil)/1000 / Coat Vol [g/cm³]</code>
+        <code>Elec Density = Avg/1000 / (Area × Elec Thick × 10⁻⁴)</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="a-rem2" placeholder="Notes on anode density…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MOD 3: POROSITY ════ -->
+<div class="module" id="mod-2">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 03</span> Porosity Calculator</div>
+    <div class="mod-desc">Inverse rule of mixtures for theoretical solid density. Electrode density auto-filled from Module 2.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><div class="ct-icon">C</div> Cathode Porosity</div>
+      <div class="field"><label>Active Material</label>
+        <select id="p-c-mat" onchange="calcM3()">
+          <option value="LFP">LFP (3.60 g/cm³)</option>
+          <option value="NMC111">NMC111 (4.75 g/cm³)</option>
+          <option value="NMC532">NMC532 (4.80 g/cm³)</option>
+          <option value="NMC622">NMC622 (4.85 g/cm³)</option>
+          <option value="NMC811" selected>NMC811 (4.90 g/cm³)</option>
+          <option value="LTO_c">LTO (3.50 g/cm³)</option>
+          <option value="NaFePO4">Na-FePO4 (3.50 g/cm³)</option>
+        </select>
+      </div>
+      <div class="field"><label>Electrode Density (g/cm³) <span class="tip" data-tip="Auto-filled from Module 2">ⓘ</span></label><input type="number" step="0.001" id="p-c-dens" placeholder="—" oninput="calcM3()"></div>
+      <div class="field"><label>Active Material % <span class="tip" data-tip="Typical: 85–95%">ⓘ</span></label><input type="number" step="0.1" id="p-c-am" value="90" oninput="calcM3()"></div>
+      <div class="field"><label>Conductive Carbon % <span class="tip" data-tip="Super P: typical 3–7%">ⓘ</span></label><input type="number" step="0.1" id="p-c-cc" value="5" oninput="calcM3()"></div>
+      <div class="field"><label>Binder (PVDF) % <span class="tip" data-tip="PVDF: typical 3–7%">ⓘ</span></label><input type="number" step="0.1" id="p-c-binder" value="5" oninput="calcM3()"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Solid Density</div><div class="ri-value" id="pc-solid">—</div><div class="ri-unit">g/cm³</div></div>
+        <div class="ri"><div class="ri-label">Porosity</div><div class="ri-value" id="pc-poros">—</div><div class="ri-unit">%</div><div id="pc-poros-s"></div></div>
+      </div>
+      <div id="pc-rec" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>1/ρ_solid = Σ(wt%_i / ρ_i)</code>
+        <code>Porosity = [1 − (ρ_elec / ρ_solid)] × 100</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="c-rem3" placeholder="Notes on cathode porosity…"></textarea></div>
+    </div>
+    <div class="card">
+      <div class="card-title anode"><div class="ct-icon">A</div> Anode Porosity</div>
+      <div class="field"><label>Active Material</label>
+        <select id="p-a-mat" onchange="calcM3()">
+          <option value="Graphite" selected>Graphite (2.26 g/cm³)</option>
+          <option value="Silicon">Silicon (2.33 g/cm³)</option>
+          <option value="SiC">Si/C Composite (~2.10 g/cm³)</option>
+          <option value="LTO_a">LTO anode (3.50 g/cm³)</option>
+          <option value="HardCarbon">Hard Carbon (1.60 g/cm³)</option>
+        </select>
+      </div>
+      <div class="field"><label>Electrode Density (g/cm³)</label><input type="number" step="0.001" id="p-a-dens" placeholder="—" oninput="calcM3()"></div>
+      <div class="field"><label>Active Material % <span class="tip" data-tip="Graphite: 94–96%. Si blends: 60–80%">ⓘ</span></label><input type="number" step="0.1" id="p-a-am" value="94" oninput="calcM3()"></div>
+      <div class="field"><label>Conductive Carbon %</label><input type="number" step="0.1" id="p-a-cc" value="2" oninput="calcM3()"></div>
+      <div class="field"><label>Binder (CMC+SBR) % <span class="tip" data-tip="CMC ~1%, SBR ~1%: total 2–4%">ⓘ</span></label><input type="number" step="0.1" id="p-a-binder" value="4" oninput="calcM3()"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Solid Density</div><div class="ri-value anode" id="pa-solid">—</div><div class="ri-unit">g/cm³</div></div>
+        <div class="ri"><div class="ri-label">Porosity</div><div class="ri-value anode" id="pa-poros">—</div><div class="ri-unit">%</div><div id="pa-poros-s"></div></div>
+      </div>
+      <div id="pa-rec" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>1/ρ_solid = Σ(wt%_i / ρ_i)</code>
+        <code>Porosity = [1 − (ρ_elec / ρ_solid)] × 100</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="a-rem3" placeholder="Notes on anode porosity…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MOD 4: LOADING ════ -->
+<div class="module" id="mod-3">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 04</span> Loading Calculation</div>
+    <div class="mod-desc">Calculates coating weight, areal loading, and active material loading. Values auto-filled from Module 1.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><div class="ct-icon">C</div> Cathode Loading Calculation</div>
+      <div class="field"><label>Avg Disc Weight (mg)</label><input type="number" id="l-c-avg" oninput="calcM4()"></div>
+      <div class="field"><label>Empty Al Foil (mg)</label><input type="number" id="l-c-foil" oninput="calcM4()"></div>
+      <div class="field"><label>Electrode Area (cm²)</label><input type="number" step="0.0001" id="l-c-area" value="1.5394" oninput="calcM4()"></div>
+      <div class="field"><label>Active Material % <span class="tip" data-tip="Used to compute active-only loading">ⓘ</span></label><input type="number" step="0.1" id="l-c-am" value="90" oninput="calcM4()"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Coating Weight</div><div class="ri-value" id="lc-coat">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Total Loading</div><div class="ri-value" id="lc-load">—</div><div class="ri-unit">mg/cm²</div><div id="lc-load-s"></div></div>
+        <div class="ri"><div class="ri-label">Active Loading</div><div class="ri-value" id="lc-aload">—</div><div class="ri-unit">mg/cm²</div></div>
+      </div>
+      <div id="lc-rec" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>Coating = Avg − Foil [mg]</code>
+        <code>Loading = Coating / Area [mg/cm²]</code>
+        <code>Active Loading = Loading × AM% / 100</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="c-rem4" placeholder="Notes on cathode loading…"></textarea></div>
+    </div>
+    <div class="card">
+      <div class="card-title anode"><div class="ct-icon">A</div> Anode Loading Calculation</div>
+      <div class="field"><label>Avg Disc Weight (mg)</label><input type="number" id="l-a-avg" oninput="calcM4()"></div>
+      <div class="field"><label>Empty Cu Foil (mg)</label><input type="number" id="l-a-foil" oninput="calcM4()"></div>
+      <div class="field"><label>Electrode Area (cm²)</label><input type="number" step="0.0001" id="l-a-area" value="2.0106" oninput="calcM4()"></div>
+      <div class="field"><label>Active Material %</label><input type="number" step="0.1" id="l-a-am" value="94" oninput="calcM4()"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Coating Weight</div><div class="ri-value anode" id="la-coat">—</div><div class="ri-unit">mg</div></div>
+        <div class="ri"><div class="ri-label">Total Loading</div><div class="ri-value anode" id="la-load">—</div><div class="ri-unit">mg/cm²</div><div id="la-load-s"></div></div>
+        <div class="ri"><div class="ri-label">Active Loading</div><div class="ri-value anode" id="la-aload">—</div><div class="ri-unit">mg/cm²</div></div>
+      </div>
+      <div id="la-rec" style="display:none"></div>
+      <div class="fbox"><div class="fbox-title">Formulas</div>
+        <code>Coating = Avg − Foil [mg]</code>
+        <code>Loading = Coating / Area [mg/cm²]</code>
+        <code>Active Loading = Loading × AM% / 100</code>
+      </div>
+      <div class="rem-box"><label>📝 Notes</label><textarea id="a-rem4" placeholder="Notes on anode loading…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MOD 5: N/P RATIO ════ -->
+<div class="module" id="mod-4">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 05</span> Capacity Calculation &amp; N/P Ratio</div>
+    <div class="mod-desc">Calculates areal capacities and N/P ratio for safe cell balancing.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><div class="ct-icon">C</div> Capacity Calculation — Cathode</div>
+      <div class="field"><label>Active Loading (mg/cm²) <span class="tip" data-tip="From Module 4">ⓘ</span></label><input type="number" step="0.01" id="pn-c-aload" placeholder="—" oninput="calcM5()"></div>
+      <div class="field"><label>Specific Capacity (mAh/g) <span class="tip" data-tip="LFP≈160, NMC811≈200, LTO≈175, NaFePO4≈150">ⓘ</span></label><input type="number" step="1" id="pn-c-cap" placeholder="e.g. 160" oninput="calcM5()"></div>
+      <div class="smart-tip" id="chem-tip-c"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Areal Capacity</div><div class="ri-value" id="pn-c-areal">—</div><div class="ri-unit">mAh/cm²</div></div>
+      </div>
+      <div class="fbox"><div class="fbox-title">Formula</div><code>C_areal = Active Loading × Specific Cap / 1000 [mAh/cm²]</code></div>
+    </div>
+    <div class="card">
+      <div class="card-title anode"><div class="ct-icon">A</div> Capacity Calculation — Anode</div>
+      <div class="field"><label>Active Loading (mg/cm²)</label><input type="number" step="0.01" id="pn-a-aload" placeholder="—" oninput="calcM5()"></div>
+      <div class="field"><label>Specific Capacity (mAh/g) <span class="tip" data-tip="Graphite≈372, Silicon≈3579, LTO≈175, HardC≈300">ⓘ</span></label><input type="number" step="1" id="pn-a-cap" placeholder="e.g. 372" oninput="calcM5()"></div>
+      <div class="smart-tip" id="chem-tip-a"></div>
+      <div class="rg">
+        <div class="ri"><div class="ri-label">Areal Capacity</div><div class="ri-value anode" id="pn-a-areal">—</div><div class="ri-unit">mAh/cm²</div></div>
+      </div>
+      <div class="fbox"><div class="fbox-title">Formula</div><code>C_areal = Active Loading × Specific Cap / 1000 [mAh/cm²]</code></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title cell"><div class="ct-icon">⚖</div> N/P Ratio</div>
+    <div class="pn-display" id="pn-display">
+      <div class="pn-number" id="pn-val">—</div>
+      <div class="pn-lbl">N/P Ratio (Anode / Cathode)</div>
+      <div class="pn-stat" id="pn-stat">Enter loading and specific capacity above</div>
+    </div>
+    <div id="pn-rec" style="display:none;margin-top:12px"></div>
+    <div class="fbox" style="margin-top:14px">
+      <div class="fbox-title">Threshold Guide</div>
+      <code style="color:#dc2626">🔴 N/P &lt; 1.05 — Lithium plating risk. Unsafe. Increase anode loading.</code>
+      <code style="color:#d97706">🟡 1.05 – 1.10 — Marginal. Monitor closely. Aim higher.</code>
+      <code style="color:#16a34a">🟢 1.10 – 1.30 — Optimal range. Recommended for all cell types.</code>
+      <code style="color:#0891b2">🔵 &gt; 1.30 — Over-balanced. Excess anode adds dead weight.</code>
+    </div>
+    <div class="rem-box"><label>📝 Notes</label><textarea id="rem5" placeholder="Notes on N/P ratio and cell balancing…"></textarea></div>
+  </div>
+</div>
+
+<!-- ════ MOD 6: POUCH DESIGN ════ -->
+<div class="module" id="mod-5">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 06</span> Pouch Cell Design Calculator</div>
+    <div class="mod-desc">Define your pouch dimensions and target capacity. The calculator determines required layers, electrode lengths, stack thickness, and design feasibility. Pouch cells have no fixed dimensions — all sizes are user-defined.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="g2">
+    <!-- LEFT: INPUTS -->
+    <div class="card">
+      <div class="card-title cell"><div class="ct-icon">📏</div> Pouch Dimensions &amp; Target</div>
+      <div class="sh">Target</div>
+      <div class="g22">
+        <div class="field"><label>Target Capacity</label><input type="number" step="0.1" id="p-cap" placeholder="e.g. 4.0" oninput="calcPouch()"></div>
+        <div class="field"><label>Unit</label>
+          <select id="p-cap-unit" onchange="calcPouch()">
+            <option value="Ah">Ah</option><option value="mAh">mAh</option>
+          </select>
+        </div>
+      </div>
+      <div class="sh">Pouch Envelope Dimensions</div>
+      <div class="g22">
+        <div class="field"><label>Pouch Width (mm) <span class="tip" data-tip="Outer pouch bag width">ⓘ</span></label><input type="number" step="1" id="p-width" placeholder="e.g. 70" oninput="calcPouch()"></div>
+        <div class="field"><label>Pouch Length (mm) <span class="tip" data-tip="Outer pouch bag length (excl. tab)">ⓘ</span></label><input type="number" step="1" id="p-length" placeholder="e.g. 100" oninput="calcPouch()"></div>
+        <div class="field"><label>Seal Margin (mm/side) <span class="tip" data-tip="Heat-seal border: typical 4–7 mm">ⓘ</span></label><input type="number" step="0.5" id="p-seal" value="5" oninput="calcPouch()"></div>
+        <div class="field"><label>Overhang (mm/side) <span class="tip" data-tip="Anode extends beyond cathode edge: 1–2 mm">ⓘ</span></label><input type="number" step="0.5" id="p-overhang" value="1.5" oninput="calcPouch()"></div>
+      </div>
+      <div class="sh">Electrode Stack Parameters</div>
+      <div class="field"><label>Cathode Active Loading (mg/cm²) <span class="tip" data-tip="Double-sided coating assumed">ⓘ</span></label><input type="number" step="0.1" id="p-c-load" placeholder="e.g. 20" oninput="calcPouch()"></div>
+      <div class="field"><label>Cathode Specific Capacity (mAh/g)</label><input type="number" step="1" id="p-c-scap" placeholder="e.g. 160" oninput="calcPouch()"></div>
+      <div class="field"><label>Cathode Coating Thickness (µm, each side)</label><input type="number" step="1" id="p-c-thick" placeholder="e.g. 70" oninput="calcPouch()"></div>
+      <div class="field"><label>Al Current Collector Thickness (µm)</label><input type="number" step="1" id="p-c-cc" value="15" oninput="calcPouch()"></div>
+      <div class="field"><label>Anode Coating Thickness (µm, each side)</label><input type="number" step="1" id="p-a-thick" placeholder="e.g. 80" oninput="calcPouch()"></div>
+      <div class="field"><label>Cu Current Collector Thickness (µm)</label><input type="number" step="1" id="p-a-cc" value="10" oninput="calcPouch()"></div>
+      <div class="field"><label>Separator Thickness (µm) <span class="tip" data-tip="Typical: 20–25 µm PP/PE or 12–16 µm ceramic">ⓘ</span></label><input type="number" step="1" id="p-sep" value="20" oninput="calcPouch()"></div>
+    </div>
+    <!-- RIGHT: RESULTS -->
+    <div class="card">
+      <div class="card-title cell"><div class="ct-icon">📐</div> Design Output &amp; Recommendations</div>
+      <div id="pouch-results">
+        <div style="color:var(--ink3);font-size:.9rem;font-weight:600;padding:20px 0">Enter dimensions and electrode parameters to compute design.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MOD 7: CYLINDRICAL ════ -->
+<div class="module" id="mod-6">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 07</span> Cylindrical Cell — Spiral Roll Calculator</div>
+    <div class="mod-desc">For 18650 and 21700 formats. Calculates electrode strip length using Archimedean spiral geometry, required turns, and achievable capacity from electrode stack parameters.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="g2">
+    <!-- LEFT: INPUTS -->
+    <div class="card">
+      <div class="card-title cell"><div class="ct-icon">🔩</div> Cell Format &amp; Target</div>
+      <div class="field"><label>Cell Format <span class="tip" data-tip="18650: 18mm dia, 65mm length. 21700: 21mm dia, 70mm length.">ⓘ</span></label>
+        <select id="cyl-fmt" onchange="cylPreset()">
+          <option value="18650">18650 (Ø18 × 65 mm)</option>
+          <option value="21700">21700 (Ø21 × 70 mm)</option>
+        </select>
+      </div>
+      <div class="g22">
+        <div class="field"><label>Cell Diameter (mm)</label><input type="number" step="0.1" id="cyl-dia" value="18" readonly oninput="calcCyl()"></div>
+        <div class="field"><label>Cell Length (mm)</label><input type="number" step="0.1" id="cyl-len" value="65" readonly oninput="calcCyl()"></div>
+        <div class="field"><label>Core Mandrel Dia (mm) <span class="tip" data-tip="Hollow winding core: typical 2–4 mm">ⓘ</span></label><input type="number" step="0.1" id="cyl-mandrel" value="3.0" oninput="calcCyl()"></div>
+        <div class="field"><label>End-cap Space (mm each end) <span class="tip" data-tip="Reserved for tabs and caps: typical 2–3 mm">ⓘ</span></label><input type="number" step="0.5" id="cyl-endcap" value="2.5" oninput="calcCyl()"></div>
+      </div>
+      <div class="field"><label>Target Capacity</label>
+        <div style="display:flex;gap:7px">
+          <input type="number" step="0.1" id="cyl-cap" placeholder="e.g. 3.0" oninput="calcCyl()" style="flex:1">
+          <select id="cyl-cap-unit" onchange="calcCyl()" style="width:70px;background:var(--bg2);border:2px solid var(--border);color:var(--ink);padding:9px 8px;border-radius:8px;font-weight:700;font-family:inherit">
+            <option value="Ah">Ah</option><option value="mAh">mAh</option>
+          </select>
+        </div>
+      </div>
+      <div class="sh">Electrode Stack (per-layer values)</div>
+      <div class="field"><label>Cathode Coating Thickness (µm, each side) <span class="tip" data-tip="Double-sided coating. Per-side value.">ⓘ</span></label><input type="number" step="1" id="cyl-c-thick" placeholder="e.g. 70" oninput="calcCyl()"></div>
+      <div class="field"><label>Al CC Thickness (µm)</label><input type="number" step="1" id="cyl-c-cc" value="15" oninput="calcCyl()"></div>
+      <div class="field"><label>Cathode Active Loading (mg/cm²)</label><input type="number" step="0.1" id="cyl-c-load" placeholder="e.g. 20" oninput="calcCyl()"></div>
+      <div class="field"><label>Cathode Specific Capacity (mAh/g)</label><input type="number" step="1" id="cyl-c-scap" placeholder="e.g. 160" oninput="calcCyl()"></div>
+      <div class="field"><label>Anode Coating Thickness (µm, each side)</label><input type="number" step="1" id="cyl-a-thick" placeholder="e.g. 80" oninput="calcCyl()"></div>
+      <div class="field"><label>Cu CC Thickness (µm)</label><input type="number" step="1" id="cyl-a-cc" value="10" oninput="calcCyl()"></div>
+      <div class="field"><label>Anode Width Overhang (mm per side) <span class="tip" data-tip="Anode wider than cathode by this amount each side">ⓘ</span></label><input type="number" step="0.5" id="cyl-overhang" value="1.5" oninput="calcCyl()"></div>
+      <div class="field"><label>Separator Thickness (µm)</label><input type="number" step="1" id="cyl-sep" value="20" oninput="calcCyl()"></div>
+    </div>
+    <!-- RIGHT: RESULTS -->
+    <div class="card">
+      <div class="card-title cell"><div class="ct-icon">📐</div> Spiral Roll Calculation Output</div>
+      <div id="cyl-results">
+        <div style="color:var(--ink3);font-size:.9rem;font-weight:600;padding:20px 0">Select format and enter electrode parameters to compute roll dimensions.</div>
+      </div>
+    </div>
+  </div>
+  <!-- Formula reference -->
+  <div class="card">
+    <div class="card-title cell"><div class="ct-icon">📖</div> Spiral Winding Theory</div>
+    <div class="fbox">
+      <div class="fbox-title">Archimedean Spiral Electrode Length Formula</div>
+      <code>Single-layer stack thickness: t = 2×t_cat + t_Al + 2×t_ano + t_Cu + 2×t_sep [µm]</code>
+      <code>Radial space: R = (D_cell/2) − (D_mandrel/2) [mm]</code>
+      <code>Number of turns: N = floor(R / t_layer_mm)</code>
+      <code>Electrode length (Archimedean): L = π × N × (D_mandrel + N × t_layer_mm) [mm]</code>
+      <code>  Derivation: L = Σ(2π × r_i) where r_i = r_core + i×t, i = 0..N−1</code>
+      <code>  → L = 2π × [N×r_core + t×N(N−1)/2] = π×N×(2×r_core + (N−1)×t)</code>
+      <code>Electrode width: W_cat = Winding_length − 2×Overhang; W_ano = Winding_length [mm]</code>
+      <code>Electrode area: A = L × W [cm²]</code>
+      <code>Areal capacity: C_areal = Active Loading × Specific Cap / 1000 [mAh/cm²]</code>
+      <code>Cell capacity: C_cell = A × C_areal / 1000 [Ah] (double-sided coating)</code>
+    </div>
+    <div class="rem-box" style="margin-top:14px"><label>📝 Notes</label><textarea id="rem-cyl" placeholder="Notes on cylindrical cell design…"></textarea></div>
+  </div>
+</div>
+
+<!-- ════ MOD 8: MATERIALS ════ -->
+<div class="module" id="mod-7">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 08</span> Material Database</div>
+    <div class="mod-desc">Built-in theoretical densities and specific capacities for all common electrode materials, binders, and current collectors.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="card">
+    <table class="mat-table">
+      <thead><tr><th>Material</th><th>Role</th><th>Density (g/cm³)</th><th>Specific Cap (mAh/g)</th><th>Relative Density</th></tr></thead>
+      <tbody id="mat-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ MOD 9: SUMMARY ════ -->
+<div class="module" id="mod-8">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">MOD 09</span> Summary Dashboard</div>
+    <div class="mod-desc">All computed results in one view. Updates automatically from all modules.</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="sum-grid">
+    <div class="sum-card"><div class="sum-header sum-h-cat">⚡ Cathode Results</div><div class="sum-body" id="sum-cathode"></div></div>
+    <div class="sum-card"><div class="sum-header sum-h-ano">⚡ Anode Results</div><div class="sum-body" id="sum-anode"></div></div>
+    <div class="sum-card" style="grid-column:1/-1"><div class="sum-header sum-h-bal">⚖ Cell Balance</div><div class="sum-body" id="sum-balance"></div></div>
+  </div>
+</div>
+
+<!-- ════ MOD 10: ABOUT ════ -->
+<div class="module" id="mod-9">
+  <div class="mod-header">
+    <div class="mod-title"><span class="mod-badge">INFO</span> About &amp; Formula Sources</div>
+    <div class="credit-tag">⚡ Created by Kalangi Sai Praneeth</div>
+  </div>
+  <div class="about-section">
+    <div class="about-card" style="border-color:var(--li-blue);background:var(--li-light)">
+      <h3>⚡ Battery Minds Calculator — SP1.0.0</h3>
+      <p><strong>Designed and Developed by Kalangi Sai Praneeth with the assistance of AI</strong></p>
+      <p>A comprehensive offline engineering tool for lithium-ion and advanced battery electrode characterization, cell balancing, and cell design. Supports LFP, NMC, LTO, LFP-LTO, Sodium-Ion, Silicon-Based, Solid-State, Supercapacitor and custom chemistries. Includes pouch and cylindrical (18650/21700) cell design modules with full spiral winding calculations.</p>
+      <p style="font-size:.78rem;color:var(--ink3);font-weight:700;margin-top:8px">Battery Minds by KSP · Version SP1.0.0 · Fully Offline · All calculations run in your browser</p>
+    </div>
+    <div class="about-card">
+      <h3>📐 Formula Sources &amp; Academic References</h3>
+      <div class="ref-item"><strong>Electrode Loading &amp; Coating:</strong> Newman, J. &amp; Thomas-Alyea, K.E. (2004). Electrochemical Systems, 3rd Ed. Wiley-Interscience.</div>
+      <div class="ref-item"><strong>Porosity (Rule of Mixtures):</strong> Doyle, M., Fuller, T.F., Newman, J. (1993). J. Electrochem. Soc., 140(6), 1526–1533.</div>
+      <div class="ref-item"><strong>N/P Ratio:</strong> Schmuch, R. et al. (2018). Nature Energy, 3, 267–278.</div>
+      <div class="ref-item"><strong>Calendering / Density:</strong> Pietsch, P. &amp; Wood, V. (2017). Annual Review of Materials Research, 47, 451–479.</div>
+      <div class="ref-item"><strong>Spiral Winding (Archimedean):</strong> Berdichevsky, G. et al. (2006). The Tesla Roadster Battery System. Tesla Motors Technical Note. + Standard derivation for Archimedean spiral arc length: L = π·N·(D_i + N·t).</div>
+      <div class="ref-item"><strong>Pouch Cell Stack Design:</strong> Ue, M., Sakaushi, K. &amp; Uosaki, K. (2020). Materials Horizons, 7, 1937–1954.</div>
+      <div class="ref-item"><strong>LFP Capacity:</strong> Padhi, A.K. et al. (1997). J. Electrochem. Soc., 144(4), 1188–1194.</div>
+      <div class="ref-item"><strong>NMC Capacity:</strong> Noh, H.J. et al. (2013). J. Power Sources, 233, 121–130.</div>
+      <div class="ref-item"><strong>Silicon Anode:</strong> Kasavajjula, U. et al. (2007). J. Power Sources, 163(2), 1003–1039.</div>
+      <div class="ref-item"><strong>Sodium-Ion:</strong> Yabuuchi, N. et al. (2014). Chem. Rev., 114(23), 11636–11682.</div>
+      <div class="ref-item"><strong>Standards:</strong> IEC 62133, IEC 62660, USABC Battery Test Procedures.</div>
+    </div>
+    <div class="about-card">
+      <h3>⚙ Industry Standard Ranges Used for Validation</h3>
+      <div class="ref-item"><strong>Cathode Loading:</strong> 10–25 mg/cm² (lab/coin), 15–35 mg/cm² (production)</div>
+      <div class="ref-item"><strong>Anode Loading (graphite):</strong> 5–18 mg/cm²</div>
+      <div class="ref-item"><strong>Cathode Porosity:</strong> 25–40% optimal; &lt;20% over-calendered; &gt;50% under-processed</div>
+      <div class="ref-item"><strong>Anode Porosity:</strong> 20–40% optimal (graphite)</div>
+      <div class="ref-item"><strong>N/P Ratio:</strong> 1.10–1.30 optimal; &lt;1.05 unsafe; &gt;1.30 over-balanced</div>
+      <div class="ref-item"><strong>Separator:</strong> 20–25 µm standard; 12–16 µm ceramic-coated</div>
+      <div class="ref-item"><strong>Pouch overhang:</strong> 1–2 mm per side (width &amp; length)</div>
+      <div class="ref-item"><strong>Cylindrical mandrel:</strong> 2–4 mm; end-cap clearance 2–3 mm per side</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main-wrap -->
+
+<!-- MOBILE NAV -->
+<div class="mob-nav">
+  <button class="mob-btn active" onclick="nav(0,this)">①Disc</button>
+  <button class="mob-btn" onclick="nav(1,this)">②Density</button>
+  <button class="mob-btn" onclick="nav(2,this)">③Porosity</button>
+  <button class="mob-btn" onclick="nav(3,this)">④Loading</button>
+  <button class="mob-btn" onclick="nav(4,this)">⑤N/P</button>
+  <button class="mob-btn" onclick="nav(5,this)">⑥Pouch</button>
+  <button class="mob-btn" onclick="nav(6,this)">⑦Cyl</button>
+  <button class="mob-btn" onclick="nav(7,this)">⑧Mats</button>
+  <button class="mob-btn" onclick="nav(8,this)">⑨Sum</button>
+  <button class="mob-btn" onclick="nav(9,this)">About</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+// ════════════════════════════════════════════════
+// BATTERY MINDS CALCULATOR — SP1.0.0
+// Designed & Developed by Kalangi Sai Praneeth
+// ════════════════════════════════════════════════
+
+// ── AUTH ──
+const CREDS = {user:'batterymind', pass:'ksp2024'};
+let currentUser = '';
+
+function doLogin(){
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value;
+  if(u === CREDS.user && p === CREDS.pass){
+    document.getElementById('login-overlay').style.display = 'none';
+    currentUser = u;
+    document.getElementById('user-display').textContent = '👤 ' + u;
+    document.getElementById('g-user').value = u;
+  } else {
+    document.getElementById('l-err').textContent = 'Incorrect username or password.';
+  }
+}
+
+// ── THEME ──
+function toggleTheme(){
+  const t = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'light' : 'dark');
+}
+
+// ── NAV ──
+function nav(idx, el){
+  document.querySelectorAll('.module').forEach((m,i) => m.classList.toggle('active', i === idx));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mob-btn').forEach(n => n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(idx === 8) updateSummary();
+}
+
+// ── HELPERS ──
+function $v(id){ return parseFloat(document.getElementById(id)?.value) || null; }
+function avg(a){ return a.length ? a.reduce((x,y)=>x+y,0)/a.length : null; }
+function stddev(a){
+  if(a.length < 2) return null;
+  const m = avg(a);
+  return Math.sqrt(a.reduce((s,x) => s+(x-m)**2, 0) / (a.length-1));
+}
+function fmt(v, d=3){ return (v !== null && !isNaN(v)) ? v.toFixed(d) : '—'; }
+function setText(id, v, d=3){
+  const e = document.getElementById(id);
+  if(e) e.textContent = fmt(v, d);
+}
+function setStatus(id, cls, text){
+  const e = document.getElementById(id);
+  if(e){ e.className = 'ri-status ' + cls; e.textContent = text; }
+}
+function showRec(id, cls, title, msg){
+  const e = document.getElementById(id);
+  if(!e) return;
+  e.style.display = 'block';
+  e.className = 'rec rec-' + cls;
+  e.innerHTML = '<strong>' + title + '</strong>' + msg;
+}
+function hideRec(id){
+  const e = document.getElementById(id);
+  if(e) e.style.display = 'none';
+}
+
+// ── CHEMISTRY DEFAULTS ──
+const CHEM = {
+  LFP:       {cCap:160, aCap:372,  cLoad:[10,20], name:'LFP'},
+  NMC:       {cCap:200, aCap:372,  cLoad:[12,25], name:'NMC'},
+  LTO:       {cCap:175, aCap:175,  cLoad:[8,18],  name:'LTO'},
+  'LFP-LTO': {cCap:160, aCap:175,  cLoad:[10,20], name:'LFP-LTO'},
+  NaIon:     {cCap:150, aCap:300,  cLoad:[8,18],  name:'Sodium-Ion'},
+  Si:        {cCap:200, aCap:1500, cLoad:[5,15],  name:'Silicon-Based'},
+  SolidState:{cCap:200, aCap:372,  cLoad:[5,15],  name:'Solid-State'},
+  Supercap:  {cCap:50,  aCap:50,   cLoad:[3,10],  name:'Supercapacitor'},
+  Custom:    {cCap:null,aCap:null,  cLoad:[5,30],  name:'Custom'},
+};
+
+// ── MATERIAL DB ──
+const DB = {
+  Graphite:2.26, Silicon:2.33, SiC:2.10, HardCarbon:1.60, LTO_a:3.50,
+  LFP:3.60, NMC111:4.75, NMC532:4.80, NMC622:4.85, NMC811:4.90,
+  LTO_c:3.50, NaFePO4:3.50,
+  SuperP:2.00, PVDF:1.78, CMC:1.59, SBR:0.94,
+  Copper:8.96, Aluminum:2.70,
+};
+
+const MAT_DATA = [
+  {n:'Graphite',     r:'Anode AM',            d:2.26, c:372},
+  {n:'Silicon',      r:'Anode AM',            d:2.33, c:3579},
+  {n:'Si/C Composite',r:'Anode AM',           d:2.10, c:1200},
+  {n:'Hard Carbon',  r:'Anode AM (Na-Ion)',    d:1.60, c:300},
+  {n:'LTO (anode)',  r:'Anode AM',            d:3.50, c:175},
+  {n:'LFP',          r:'Cathode AM',          d:3.60, c:160},
+  {n:'NMC111',       r:'Cathode AM',          d:4.75, c:160},
+  {n:'NMC532',       r:'Cathode AM',          d:4.80, c:180},
+  {n:'NMC622',       r:'Cathode AM',          d:4.85, c:190},
+  {n:'NMC811',       r:'Cathode AM',          d:4.90, c:200},
+  {n:'Na-FePO4',     r:'Cathode AM (Na-Ion)', d:3.50, c:150},
+  {n:'LTO (cathode)',r:'Cathode AM',          d:3.50, c:175},
+  {n:'Super P',      r:'Conductive Carbon',   d:2.00, c:'—'},
+  {n:'PVDF',         r:'Binder (cathode)',    d:1.78, c:'—'},
+  {n:'CMC',          r:'Binder (anode)',      d:1.59, c:'—'},
+  {n:'SBR',          r:'Binder (anode)',      d:0.94, c:'—'},
+  {n:'Copper Foil',  r:'Current Collector',   d:8.96, c:'—'},
+  {n:'Aluminum Foil',r:'Current Collector',   d:2.70, c:'—'},
+];
+
+// ── GLOBAL STATE ──
+const S = {};
+
+// ════ MODULE 1: DISC WEIGHT ════
+function calcM1(){
+  ['c','a'].forEach(side => {
+    const diam = parseFloat(document.getElementById(side+'-diam').value);
+    const r_cm = (diam/2) / 10;
+    const area = Math.PI * r_cm * r_cm;
+    document.getElementById('area-'+side).textContent = area.toFixed(4) + ' cm²';
+    S[side+'Area'] = area;
+
+    const weights = [1,2,3,4,5].map(i => $v(side+'-w'+i)).filter(x => x !== null);
+    const foil = $v(side+'-foil');
+    const mean = weights.length ? avg(weights) : null;
+    const sd   = weights.length > 1 ? stddev(weights) : null;
+    const coat = (mean !== null && foil !== null) ? mean - foil : null;
+    const load = (coat !== null && area > 0) ? coat / area : null;
+
+    setText(side+'-avg', mean, 3);
+    setText(side+'-std', sd, 3);
+    setText(side+'-coat', coat, 3);
+    setText(side+'-load', load, 4);
+
+    S[side+'Avg'] = mean;
+    S[side+'Foil'] = foil;
+    S[side+'Coat'] = coat;
+    S[side+'Load'] = load;
+
+    // Validate loading
+    const chem = document.getElementById('g-chem').value;
+    const def = CHEM[chem] || CHEM.LFP;
+    const [lMin, lMax] = def.cLoad;
+    const sEl = document.getElementById(side+'-load-s');
+    const rId = side+'-rec1';
+    if(load !== null && sEl){
+      if(load < lMin){
+        setStatus(side+'-load-s','s-warn','⚠ Below Range');
+        showRec(rId,'warn','⚠ Loading Below Range',
+          ' Loading '+load.toFixed(2)+' mg/cm² is below typical '+lMin+'–'+lMax+' mg/cm² for '+def.name+'. Verify foil weight or consider higher coating.');
+      } else if(load > lMax){
+        setStatus(side+'-load-s','s-err','🔴 Above Range');
+        showRec(rId,'err','🔴 Loading Too High',
+          ' Loading '+load.toFixed(2)+' mg/cm² exceeds '+lMax+' mg/cm² for '+def.name+'. Risk of poor electrolyte penetration and mechanical issues.');
+      } else {
+        setStatus(side+'-load-s','s-ok','✓ Good');
+        hideRec(rId);
+      }
+    } else { hideRec(rId); }
+
+    // Auto-fill downstream
+    if(side === 'c'){
+      setIfEmpty('d-c-avg', mean); setIfEmpty('d-c-foil', foil);
+      setIfEmpty('l-c-avg', mean); setIfEmpty('l-c-foil', foil);
+      setIfEmpty('l-c-area', area ? area.toFixed(4) : '');
+    } else {
+      setIfEmpty('d-a-avg', mean); setIfEmpty('d-a-foil', foil);
+      setIfEmpty('l-a-avg', mean); setIfEmpty('l-a-foil', foil);
+      setIfEmpty('l-a-area', area ? area.toFixed(4) : '');
+    }
+    calcM2(); calcM4();
+  });
+  updateSummary();
+}
+
+function setIfEmpty(id, val){
+  const el = document.getElementById(id);
+  if(el && !el.dataset.userEdited) el.value = (val !== null && !isNaN(val)) ? val : '';
+}
+
+// ════ MODULE 2: DENSITY ════
+function calcM2(){
+  ['c','a'].forEach(side => {
+    const mean = $v('d-'+side+'-avg');
+    const foil = $v('d-'+side+'-foil');
+    const thick = $v('d-'+side+'-thick');
+    const foilThick = $v('d-'+side+'-foilthick');
+    const area = S[side+'Area'] || (side==='c' ? Math.PI*0.49 : Math.PI*0.64);
+
+    let cDens = null, eDens = null, coatThick = null;
+    if(mean && foil && thick && foilThick && thick > foilThick){
+      coatThick = thick - foilThick; // µm
+      const coatVol = area * (coatThick * 1e-4); // cm³
+      const elecVol = area * (thick * 1e-4);
+      cDens = (mean - foil) / 1000 / coatVol;
+      eDens = mean / 1000 / elecVol;
+    }
+
+    const pre = side==='c' ? 'dc' : 'da';
+    setText(pre+'-coat', cDens, 4);
+    setText(pre+'-elec', eDens, 4);
+    setText(pre+'-cthick', coatThick, 1);
+    S[side+'CoatDens'] = cDens;
+    S[side+'ElecDens'] = eDens;
+
+    // Validate coating density
+    const lo = side==='c' ? 2.5 : 0.8;
+    const hi = side==='c' ? 4.5 : 2.0;
+    const rId = pre+'-rec';
+    if(cDens !== null){
+      if(cDens < lo){
+        setStatus(pre+'-coat-s','s-warn','⚠ Low Density');
+        showRec(rId,'warn','⚠ Coating Density Low',
+          ' '+cDens.toFixed(3)+' g/cm³ suggests under-calendering. Increase calendering pressure to improve energy density.');
+      } else if(cDens > hi){
+        setStatus(pre+'-coat-s','s-err','🔴 Over-compressed');
+        showRec(rId,'err','🔴 Coating Density Too High',
+          ' '+cDens.toFixed(3)+' g/cm³ indicates over-calendering. This closes pores and blocks electrolyte access. Reduce pressure.');
+      } else {
+        setStatus(pre+'-coat-s','s-ok','✓ Good');
+        hideRec(rId);
+      }
+    } else { hideRec(rId); }
+
+    // Auto-fill porosity
+    const pEl = document.getElementById('p-'+side+'-dens');
+    if(pEl && eDens !== null && !pEl.dataset.userEdited){
+      pEl.value = eDens.toFixed(4); calcM3();
+    }
+  });
+  updateSummary();
+}
+
+// ════ MODULE 3: POROSITY ════
+function solidDensity(mat, am, cc, binder, side){
+  const matRho = {
+    LFP:3.60, NMC111:4.75, NMC532:4.80, NMC622:4.85, NMC811:4.90,
+    LTO_c:3.50, NaFePO4:3.50,
+    Graphite:2.26, Silicon:2.33, SiC:2.10, LTO_a:3.50, HardCarbon:1.60,
+  };
+  const rhoAM  = matRho[mat] || 2.26;
+  const rhoCC  = DB.SuperP;   // 2.00
+  const rhoBinder = side==='c' ? DB.PVDF : (DB.CMC*0.5 + DB.SBR*0.5);
+  const f_am = am/100, f_cc = cc/100, f_b = binder/100;
+  const inv = f_am/rhoAM + f_cc/rhoCC + f_b/rhoBinder;
+  return inv > 0 ? 1/inv : null;
+}
+
+function calcM3(){
+  ['c','a'].forEach(side => {
+    const mat    = document.getElementById('p-'+side+'-mat').value;
+    const eDens  = $v('p-'+side+'-dens');
+    const am     = $v('p-'+side+'-am') || 0;
+    const cc     = $v('p-'+side+'-cc') || 0;
+    const binder = $v('p-'+side+'-binder') || 0;
+    const sD     = solidDensity(mat, am, cc, binder, side);
+    const poros  = (sD && eDens) ? (1 - eDens/sD)*100 : null;
+    const pre    = side==='c' ? 'pc' : 'pa';
+
+    setText(pre+'-solid', sD, 4);
+    setText(pre+'-poros', poros, 2);
+    S[side+'SolidDens'] = sD;
+    S[side+'Porosity']  = poros;
+
+    const rId = pre+'-rec';
+    if(poros !== null){
+      if(poros < 20){
+        setStatus(pre+'-poros-s','s-err','🔴 Over-calendered');
+        showRec(rId,'err','🔴 Porosity Critically Low',
+          ' '+poros.toFixed(1)+'% — severely limits electrolyte penetration. Calendering may need further optimization. Reduce calendering pressure significantly.');
+      } else if(poros < 25){
+        setStatus(pre+'-poros-s','s-warn','⚠ Low');
+        showRec(rId,'warn','⚠ Porosity Below Optimal',
+          ' '+poros.toFixed(1)+'% is below the 25–40% target. Monitor rate capability and ionic transport.');
+      } else if(poros > 50){
+        setStatus(pre+'-poros-s','s-warn','⚠ High');
+        showRec(rId,'warn','⚠ Porosity High',
+          ' '+poros.toFixed(1)+'% — electrode may lack mechanical integrity. Consider calendering to 25–40%.');
+      } else {
+        setStatus(pre+'-poros-s','s-ok','✓ Optimal');
+        showRec(rId,'ok','✓ Porosity in Optimal Range',
+          ' '+poros.toFixed(1)+'% is within 25–40% — excellent balance of electrolyte access and mechanical strength.');
+      }
+    } else { hideRec(rId); }
+  });
+  updateSummary();
+}
+
+// ════ MODULE 4: LOADING ════
+function calcM4(){
+  ['c','a'].forEach(side => {
+    const mean = $v('l-'+side+'-avg');
+    const foil = $v('l-'+side+'-foil');
+    const area = $v('l-'+side+'-area');
+    const am   = $v('l-'+side+'-am') || 0;
+    let coat=null, load=null, aload=null;
+    if(mean !== null && foil !== null) coat = mean - foil;
+    if(coat !== null && area) { load = coat/area; aload = load*(am/100); }
+
+    const pre = side==='c' ? 'lc' : 'la';
+    setText(pre+'-coat', coat, 3);
+    setText(pre+'-load', load, 4);
+    setText(pre+'-aload', aload, 4);
+    S[side+'ALoad'] = aload;
+    S[side+'Load4'] = load;
+
+    const chem = document.getElementById('g-chem').value;
+    const def = CHEM[chem] || CHEM.LFP;
+    const [lMin, lMax] = def.cLoad;
+    const rId = pre+'-rec';
+    if(load !== null){
+      if(load < lMin){
+        setStatus(pre+'-load-s','s-warn','⚠ Low'); showRec(rId,'warn','⚠ Loading Too Low',' '+load.toFixed(2)+' mg/cm². Target '+lMin+'–'+lMax+' mg/cm² for '+def.name+'.');
+      } else if(load > lMax){
+        setStatus(pre+'-load-s','s-err','🔴 High'); showRec(rId,'err','🔴 Loading Too High',' '+load.toFixed(2)+' mg/cm² exceeds '+lMax+' mg/cm². Risk of poor electrode integrity.');
+      } else {
+        setStatus(pre+'-load-s','s-ok','✓ Good'); hideRec(rId);
+      }
+    } else { hideRec(rId); }
+  });
+  updateSummary();
+}
+
+// ════ MODULE 5: N/P RATIO ════
+function calcM5(){
+  const caload = $v('pn-c-aload'), ccap = $v('pn-c-cap');
+  const aaload = $v('pn-a-aload'), acap = $v('pn-a-cap');
+  const cAreal = (caload && ccap) ? caload*ccap/1000 : null;
+  const aAreal = (aaload && acap) ? aaload*acap/1000 : null;
+  const pn = (cAreal && aAreal && cAreal > 0) ? aAreal/cAreal : null;
+
+  setText('pn-c-areal', cAreal, 4);
+  setText('pn-a-areal', aAreal, 4);
+  S.cAreal = cAreal; S.aAreal = aAreal; S.pnRatio = pn;
+
+  const dEl = document.getElementById('pn-display');
+  const vEl = document.getElementById('pn-val');
+  const sEl = document.getElementById('pn-stat');
+  dEl.className = 'pn-display';
+  if(pn === null){ vEl.textContent='—'; sEl.textContent='Enter values above'; hideRec('pn-rec'); return; }
+  vEl.textContent = pn.toFixed(3);
+
+  if(pn < 1.05){
+    dEl.classList.add('pn-red'); sEl.textContent='⚠ Under-balanced — Lithium Plating Risk';
+    showRec('pn-rec','err','🔴 N/P Ratio Outside Recommended Limits',
+      ' N/P = '+pn.toFixed(3)+'. Severe lithium plating risk. Increase anode active loading or decrease cathode loading. Minimum recommended: 1.10.');
+  } else if(pn < 1.10){
+    dEl.classList.add('pn-yellow'); sEl.textContent='△ Marginal — Monitor Carefully';
+    showRec('pn-rec','warn','⚠ N/P Marginal',
+      ' N/P = '+pn.toFixed(3)+'. Borderline safe. Monitor first-cycle coulombic efficiency. Aim for ≥ 1.10.');
+  } else if(pn <= 1.30){
+    dEl.classList.add('pn-green'); sEl.textContent='✓ Optimal — Recommended';
+    showRec('pn-rec','ok','✓ N/P Ratio Suitable for Cell Assembly',
+      ' N/P = '+pn.toFixed(3)+'. Excellent balance. Suitable for coin, pouch, and cylindrical cell assembly.');
+  } else {
+    dEl.classList.add('pn-blue'); sEl.textContent='● Over-balanced — Excess Anode';
+    showRec('pn-rec','warn','⚠ N/P Ratio Too High',
+      ' N/P = '+pn.toFixed(3)+'. Excess anode capacity adds mass without benefit. Consider N/P improvement: reduce anode loading toward 1.10–1.30.');
+  }
+  updateSummary();
+}
+
+// ════ MODULE 6: POUCH CELL DESIGN ════
+function calcPouch(){
+  const capRaw  = $v('p-cap');
+  const capUnit = document.getElementById('p-cap-unit').value;
+  const capAh   = capRaw ? (capUnit==='mAh' ? capRaw/1000 : capRaw) : null;
+  const pW      = $v('p-width');       // mm outer pouch width
+  const pL      = $v('p-length');      // mm outer pouch length
+  const seal    = $v('p-seal')  || 5;  // mm
+  const ohang   = $v('p-overhang') || 1.5; // mm per side
+
+  const cLoad  = $v('p-c-load');   // mg/cm²
+  const cScap  = $v('p-c-scap');   // mAh/g
+  const cThick = $v('p-c-thick');  // µm per side
+  const cCC    = $v('p-c-cc')  || 15; // µm
+  const aThick = $v('p-a-thick'); // µm per side
+  const aCC    = $v('p-a-cc')  || 10; // µm
+  const sep    = $v('p-sep')   || 20; // µm
+
+  const el = document.getElementById('pouch-results');
+
+  if(!capAh || !pW || !pL || !cLoad || !cScap){
+    el.innerHTML = '<div style="color:var(--ink3);font-size:.9rem;font-weight:600;padding:20px 0">Fill all required fields (capacity, pouch dimensions, cathode loading and specific capacity).</div>';
+    return;
+  }
+
+  // Active electrode dimensions (inside seal margin)
+  const activeW = pW - 2*seal;   // mm cathode width
+  const activeL = pL - 2*seal;   // mm cathode length
+  if(activeW <= 0 || activeL <= 0){
+    el.innerHTML = '<div class="rec rec-err"><strong>🔴 Invalid Dimensions</strong>Seal margin exceeds pouch size. Reduce seal margin or increase pouch dimensions.</div>';
+    return;
+  }
+
+  const aW = activeW + 2*ohang;  // mm anode width
+  const aL = activeL + 2*ohang;  // mm anode length
+
+  // Area per layer (double-sided cathode, cm²)
+  const cArea_cm2 = (activeW/10) * (activeL/10);
+
+  // Areal capacity (mAh/cm²) — double-sided = 2× single side
+  const cArealCap = cLoad * cScap / 1000; // mAh/cm² per side, double-sided → ×2
+  const cArealCapDS = cArealCap * 2;       // double-sided per layer
+
+  // Required layers
+  const capPerLayer_mAh = cArea_cm2 * cArealCapDS;
+  const reqLayers = Math.ceil((capAh * 1000) / capPerLayer_mAh);
+  const achCapMah = reqLayers * capPerLayer_mAh;
+
+  // Stack thickness per layer (µm): cathode_both_sides + CC_cat + anode_both_sides + CC_ano + 2×sep
+  const layerThick_um = (cThick ? 2*cThick : 0) + cCC + (aThick ? 2*aThick : 0) + aCC + 2*sep;
+  const stackThick_mm = reqLayers > 0 ? reqLayers * layerThick_um / 1000 : null;
+  const totalThick_mm = stackThick_mm ? stackThick_mm + 0.3 : null; // +0.3mm pouch shell (2×0.15mm Al laminate)
+
+  // N/P check
+  const aLoad  = cLoad; // same loading used for simplicity if not entered separately
+  const np_est = null;  // not computed here (user has full N/P module)
+
+  // Validation
+  const recs=[], warns=[], errs=[];
+  if(totalThick_mm && totalThick_mm > 20) errs.push('Stack thickness '+totalThick_mm.toFixed(2)+' mm is very large. Consider larger pouch area or higher electrode loading to reduce layer count.');
+  if(reqLayers === 1) recs.push('Single layer design — suitable for very small/thin pouch cells or lab testing.');
+  else if(reqLayers <= 5) recs.push(reqLayers+'-layer stack: compact pouch cell. Good for small format cells (< 2 Ah).');
+  else if(reqLayers <= 15) recs.push(reqLayers+'-layer stack: medium-format pouch cell. Ensure uniform electrolyte distribution across all layers.');
+  else recs.push(reqLayers+'-layer stack: large pouch cell. Critical to ensure homogeneous electrolyte filling and adequate formation cycling time.');
+  recs.push('Anode overhangs cathode by '+ohang+' mm per side — prevents edge lithium plating.');
+  recs.push('Recommended separator: 20 µm PP/PE. Use ceramic-coated for higher safety.');
+  recs.push('Electrolyte volume recommendation: ' + (achCapMah * 3.5 / 1000).toFixed(2) + ' – ' + (achCapMah * 5 / 1000).toFixed(2) + ' mL (3.5–5 µL/mAh guideline for pouch cells).');
+  if(cThick && cThick > 120) warns.push('Cathode coating thickness '+cThick+' µm per side is high. Calendering may be needed to achieve sufficient density.');
+  if(sep < 16) warns.push('Separator '+sep+' µm is thin. Ensure it is ceramic-coated to prevent internal short circuits.');
+
+  // Build result HTML
+  let html = '';
+  // Key results grid
+  html += '<div class="rg">';
+  const ris = [
+    {l:'Target Capacity', v:fmt(capAh*1000,1), u:'mAh'},
+    {l:'Achievable Capacity', v:fmt(achCapMah,1), u:'mAh'},
+    {l:'Required Layers', v:reqLayers, u:'layers'},
+    {l:'Cathode Width', v:fmt(activeW,1), u:'mm'},
+    {l:'Cathode Length', v:fmt(activeL,1), u:'mm'},
+    {l:'Anode Width', v:fmt(aW,1), u:'mm'},
+    {l:'Anode Length', v:fmt(aL,1), u:'mm'},
+    {l:'Cathode Area/Layer', v:fmt(cArea_cm2,2), u:'cm²'},
+    {l:'Cap/Layer (2-sided)', v:fmt(capPerLayer_mAh,2), u:'mAh'},
+    {l:'Layer Thickness', v:(layerThick_um > 0 ? layerThick_um.toFixed(0) : '—'), u:'µm'},
+    {l:'Stack Thickness', v:(stackThick_mm ? stackThick_mm.toFixed(2) : '—'), u:'mm'},
+    {l:'Total Cell Thickness', v:(totalThick_mm ? totalThick_mm.toFixed(2) : '—'), u:'mm'},
+  ];
+  ris.forEach(r => {
+    html += '<div class="ri"><div class="ri-label">'+r.l+'</div><div class="ri-value cell">'+r.v+'</div><div class="ri-unit">'+r.u+'</div></div>';
+  });
+  html += '</div>';
+
+  // Stack visual
+  if(layerThick_um > 0){
+    const layers = [
+      {n:'Al CC ('+cCC+' µm)', t:cCC, col:'#a8a8a8'},
+      {n:'Cathode ×2 ('+(cThick ? 2*cThick : '?')+' µm)', t:cThick?2*cThick:0, col:'#0077b5'},
+      {n:'Separator ×2 ('+(2*sep)+' µm)', t:2*sep, col:'#e0e8ff'},
+      {n:'Anode ×2 ('+(aThick ? 2*aThick : '?')+' µm)', t:aThick?2*aThick:0, col:'#7c3aed'},
+      {n:'Cu CC ('+aCC+' µm)', t:aCC, col:'#b87333'},
+    ];
+    html += '<div class="stack-visual"><div class="stack-visual-title">📦 One Repeat Unit (1 Layer = '+layerThick_um.toFixed(0)+' µm)</div>';
+    layers.forEach(l => {
+      const w = Math.max(Math.round(l.t/layerThick_um*240), 6);
+      html += '<div class="stack-layer" style="background:'+l.col+'22;border-left:4px solid '+l.col+'">';
+      html += '<span class="sl-bar" style="width:'+w+'px;background:'+l.col+'"></span>';
+      html += '<span class="sl-name">'+l.n+'</span><span class="sl-thick">'+l.t+' µm</span></div>';
+    });
+    html += '</div>';
+  }
+
+  // Formulas
+  html += '<div class="fbox" style="margin-top:14px"><div class="fbox-title">Pouch Cell Design Formulas</div>';
+  html += '<code>Active Cathode Area = (Pouch W − 2×Seal) × (Pouch L − 2×Seal) / 100 [cm²]</code>';
+  html += '<code>Cathode Areal Cap (2-sided) = Loading × Specific Cap / 1000 × 2 [mAh/cm²]</code>';
+  html += '<code>Capacity per Layer = Area × Areal Cap [mAh]</code>';
+  html += '<code>Required Layers = ⌈ Target Cap / Cap per Layer ⌉</code>';
+  html += '<code>Layer Thickness = 2×t_cat + t_Al + 2×t_ano + t_Cu + 2×t_sep [µm]</code>';
+  html += '<code>Stack Thickness = Layers × Layer Thickness / 1000 [mm]</code>';
+  html += '<code>Electrolyte Volume ≈ 3.5–5 µL per mAh capacity</code>';
+  html += '</div>';
+
+  // Rec boxes
+  if(errs.length) html += '<div class="rec rec-err" style="margin-top:10px"><strong>🔴 Critical Issues</strong>' + errs.map(e=>'• '+e).join('<br>') + '</div>';
+  if(warns.length) html += '<div class="rec rec-warn" style="margin-top:8px"><strong>⚠ Warnings</strong>' + warns.map(w=>'• '+w).join('<br>') + '</div>';
+  if(recs.length)  html += '<div class="rec rec-ok" style="margin-top:8px"><strong>✓ Design Recommendations</strong>' + recs.map(r=>'• '+r).join('<br>') + '</div>';
+
+  html += '<div class="rem-box" style="margin-top:14px"><label>📝 Notes</label><textarea id="rem-pouch" placeholder="Notes on pouch cell design…"></textarea></div>';
+  el.innerHTML = html;
+}
+
+// ════ MODULE 7: CYLINDRICAL SPIRAL ════
+function cylPreset(){
+  const fmt = document.getElementById('cyl-fmt').value;
+  const dia = document.getElementById('cyl-dia');
+  const len = document.getElementById('cyl-len');
+  if(fmt === '18650'){ dia.value=18; len.value=65; }
+  else              { dia.value=21; len.value=70; }
+  calcCyl();
+}
+
+function calcCyl(){
+  const dia     = $v('cyl-dia')     || 18;
+  const len     = $v('cyl-len')     || 65;
+  const mandrel = $v('cyl-mandrel') || 3.0;
+  const endcap  = $v('cyl-endcap') || 2.5;
+  const capRaw  = $v('cyl-cap');
+  const capUnit = document.getElementById('cyl-cap-unit').value;
+  const capAh   = capRaw ? (capUnit==='mAh' ? capRaw/1000 : capRaw) : null;
+
+  const cThick  = $v('cyl-c-thick');
+  const cCC     = $v('cyl-c-cc') || 15;
+  const cLoad   = $v('cyl-c-load');
+  const cScap   = $v('cyl-c-scap');
+  const aThick  = $v('cyl-a-thick');
+  const aCC     = $v('cyl-a-cc') || 10;
+  const ohang   = $v('cyl-overhang') || 1.5;
+  const sep     = $v('cyl-sep') || 20;
+
+  const el = document.getElementById('cyl-results');
+
+  // Compute single-layer stack thickness (µm)
+  // One full winding revolution: cathode (2-sided) + anode (2-sided) + 2 separators
+  const t_um = (cThick ? 2*cThick : 0) + cCC + (aThick ? 2*aThick : 0) + aCC + 2*sep;
+
+  if(t_um === 0 || (!cLoad && !cScap)){
+    el.innerHTML = '<div style="color:var(--ink3);font-size:.9rem;font-weight:600;padding:20px 0">Enter electrode thickness values and loading to compute spiral dimensions.</div>';
+    return;
+  }
+
+  const t_mm = t_um / 1000; // mm per revolution (layer thickness)
+
+  // Geometry
+  const windLen = len - 2*endcap;          // usable winding length (mm)
+  const r_outer = dia/2;                   // mm
+  const r_core  = mandrel/2;               // mm
+  const radial  = r_outer - r_core;        // mm available radial space
+
+  // Maximum number of turns
+  const N_max = Math.floor(radial / t_mm);
+
+  // Electrode width
+  const W_cat = windLen - 2*ohang;         // mm (cathode narrower)
+  const W_ano = windLen;                   // mm (anode = full width)
+
+  // ── ARCHIMEDEAN SPIRAL ELECTRODE LENGTH ──
+  // For N turns, r_i = r_core + i * t_mm (i = 0,1,...,N-1)
+  // L = Σ 2π r_i = 2π Σ(r_core + i*t_mm)
+  //   = 2π [N*r_core + t_mm * N*(N-1)/2]
+  //   = π * N * (2*r_core + (N-1)*t_mm)
+  function spiralLength(N, r0, t){
+    return Math.PI * N * (2*r0 + (N-1)*t);
+  }
+
+  const L_max_mm = spiralLength(N_max, r_core, t_mm);  // mm electrode strip length at full capacity
+
+  // Areal capacity (mAh/cm²) — double-sided
+  const cArealCap = (cLoad && cScap) ? cLoad * cScap / 1000 * 2 : null;  // ×2 for double-sided
+
+  // Max achievable capacity
+  let maxCapAh = null;
+  if(cArealCap && W_cat > 0){
+    const area_cm2 = (L_max_mm/10) * (W_cat/10);
+    maxCapAh = area_cm2 * cArealCap / 1000;
+  }
+
+  // Required turns for target capacity
+  let N_req = null, L_req_mm = null;
+  if(capAh && cArealCap && W_cat > 0){
+    // Solve: π*N*(2*r0 + (N-1)*t) * (W_cat/10)/10 * cArealCap/1000 = capAh
+    // Iterate N from 1 to N_max+50
+    for(let N=1; N<=N_max+200; N++){
+      const L = spiralLength(N, r_core, t_mm);
+      const cap = (L/10) * (W_cat/10) * cArealCap / 1000;
+      if(cap >= capAh){ N_req = N; L_req_mm = L; break; }
+    }
+  }
+
+  const fits = N_req !== null && N_req <= N_max;
+  const L_req_m  = L_req_mm ? L_req_mm/1000 : null;
+  const L_max_m  = L_max_mm/1000;
+
+  // Build output HTML
+  let html = '<div class="rg">';
+  const ris = [
+    {l:'Cell Format', v:document.getElementById('cyl-fmt').value, u:''},
+    {l:'Winding Length', v:fmt(windLen,1), u:'mm'},
+    {l:'Cathode Width', v:fmt(W_cat,1), u:'mm'},
+    {l:'Anode Width', v:fmt(W_ano,1), u:'mm'},
+    {l:'Layer Thickness', v:fmt(t_um,0), u:'µm'},
+    {l:'Radial Space', v:fmt(radial,2), u:'mm'},
+    {l:'Max Turns', v:N_max, u:'turns'},
+    {l:'Max Electrode Length', v:fmt(L_max_m,3), u:'m'},
+    {l:'Max Achievable Cap', v:(maxCapAh ? fmt(maxCapAh*1000,0) : '—'), u:'mAh'},
+    {l:'Required Turns', v:(N_req !== null ? N_req : '—'), u:'turns'},
+    {l:'Required Electrode Length', v:(L_req_m ? fmt(L_req_m,3) : '—'), u:'m'},
+    {l:'Cathode Areal Cap (2-sided)', v:(cArealCap ? fmt(cArealCap,4) : '—'), u:'mAh/cm²'},
+  ];
+  ris.forEach(r => {
+    html += '<div class="ri"><div class="ri-label">'+r.l+'</div><div class="ri-value cell">'+r.v+'</div><div class="ri-unit">'+r.u+'</div></div>';
+  });
+  html += '</div>';
+
+  // Stack cross-section visual
+  html += '<div class="stack-visual" style="margin-top:14px"><div class="stack-visual-title">🔩 Jelly Roll Cross-Section (1 Revolution = '+t_um.toFixed(0)+' µm)</div>';
+  const sLayers=[
+    {n:'Cu CC ('+aCC+' µm)',           t:aCC,                        col:'#b87333'},
+    {n:'Anode coat ×2 ('+(aThick?2*aThick:'?')+' µm)', t:aThick?2*aThick:0, col:'#7c3aed'},
+    {n:'Separator ×2 ('+(2*sep)+' µm)', t:2*sep,                     col:'#c0d8ff'},
+    {n:'Cathode coat ×2 ('+(cThick?2*cThick:'?')+' µm)',t:cThick?2*cThick:0,col:'#0077b5'},
+    {n:'Al CC ('+cCC+' µm)',           t:cCC,                        col:'#a8a8a8'},
+  ];
+  sLayers.forEach(l => {
+    const w = t_um > 0 ? Math.max(Math.round(l.t/t_um*240), 4) : 4;
+    html += '<div class="stack-layer" style="background:'+l.col+'22;border-left:4px solid '+l.col+'">';
+    html += '<span class="sl-bar" style="width:'+w+'px;background:'+l.col+'"></span>';
+    html += '<span class="sl-name">'+l.n+'</span><span class="sl-thick">'+l.t+' µm</span></div>';
+  });
+  html += '</div>';
+
+  // Recommendations
+  const recs=[], warns=[];
+  if(N_req !== null && fits){
+    recs.push('Target '+fmt(capAh*1000,0)+' mAh achievable with '+N_req+' turns ('+fmt(L_req_m,3)+' m electrode). Max: '+N_max+' turns. ✓');
+  }
+  if(N_req !== null && !fits){
+    warns.push('Target '+fmt(capAh*1000,0)+' mAh requires '+N_req+' turns but '+document.getElementById('cyl-fmt').value+' only accommodates '+N_max+' turns. Max achievable: '+(maxCapAh?fmt(maxCapAh*1000,0):'?')+' mAh. Consider: (1) higher electrode loading, (2) switch to 21700 format, (3) reduce target capacity.');
+  }
+  if(ohang < 1)  warns.push('Overhang < 1 mm may cause edge lithium plating during cycling.');
+  if(sep < 16)   warns.push('Separator '+sep+' µm is thin. Use ceramic-coated separator for cylindrical cells.');
+  recs.push('Double-sided coating assumed for both electrodes (industry standard for cylindrical cells).');
+  recs.push('Electrode strip length = '+fmt(L_max_m,3)+' m (cathode) for full '+N_max+'-turn winding.');
+
+  if(warns.length) html += '<div class="rec rec-warn" style="margin-top:12px"><strong>⚠ Warnings</strong>' + warns.map(w=>'• '+w).join('<br>') + '</div>';
+  if(recs.length)  html += '<div class="rec rec-ok" style="margin-top:8px"><strong>✓ Design Recommendations</strong>' + recs.map(r=>'• '+r).join('<br>') + '</div>';
+
+  el.innerHTML = html;
+}
+
+// ════ CHEMISTRY CHANGE ════
+function onChemChange(){
+  const chem = document.getElementById('g-chem').value;
+  const def = CHEM[chem] || CHEM.LFP;
+  const tc = document.getElementById('chem-tip-c');
+  const ta = document.getElementById('chem-tip-a');
+  if(tc){ tc.textContent = '💡 '+def.name+' cathode: typical specific capacity ~'+(def.cCap||'custom')+' mAh/g'; tc.classList.add('show'); }
+  if(ta){ ta.textContent = '💡 '+def.name+' anode: typical specific capacity ~'+(def.aCap||'custom')+' mAh/g'; ta.classList.add('show'); }
+  const pcap = document.getElementById('pn-c-cap');
+  const paap = document.getElementById('pn-a-cap');
+  if(pcap && def.cCap) pcap.placeholder = 'e.g. '+def.cCap;
+  if(paap && def.aCap) paap.placeholder = 'e.g. '+def.aCap;
+  calcM1(); calcM4();
+}
+
+// ════ MATERIAL TABLE ════
+function buildMat(){
+  const mx = Math.max(...MAT_DATA.map(m=>m.d));
+  document.getElementById('mat-tbody').innerHTML = MAT_DATA.map(m=>`
+    <tr>
+      <td><strong>${m.n}</strong></td>
+      <td style="color:var(--ink2)">${m.r}</td>
+      <td style="font-weight:800;color:var(--li-blue)">${m.d.toFixed(2)}</td>
+      <td style="font-weight:700;color:#7c3aed">${m.c}</td>
+      <td><span class="dbar" style="width:${Math.round(m.d/mx*120)}px"></span></td>
+    </tr>`).join('');
+}
+
+// ════ SUMMARY ════
+function srow(lbl,val,unit=''){
+  const sv = (val!==null&&val!==undefined&&!isNaN(val)) ? val.toFixed(4)+' '+unit : '—';
+  return '<div class="sum-row"><span class="sk">'+lbl+'</span><span class="sv">'+sv+'</span></div>';
+}
+function updateSummary(){
+  document.getElementById('sum-cathode').innerHTML =
+    srow('Avg Disc Weight',S.cAvg,'mg')+srow('Coating Weight',S.cCoat,'mg')+
+    srow('Loading',S.cLoad,'mg/cm²')+srow('Electrode Density',S.cElecDens,'g/cm³')+
+    srow('Porosity',S.cPorosity,'%')+srow('Areal Capacity',S.cAreal,'mAh/cm²');
+  document.getElementById('sum-anode').innerHTML =
+    srow('Avg Disc Weight',S.aAvg,'mg')+srow('Coating Weight',S.aCoat,'mg')+
+    srow('Loading',S.aLoad,'mg/cm²')+srow('Electrode Density',S.aElecDens,'g/cm³')+
+    srow('Porosity',S.aPorosity,'%')+srow('Areal Capacity',S.aAreal,'mAh/cm²');
+  let st='—';
+  if(S.pnRatio){
+    if(S.pnRatio<1.05) st='🔴 Not Recommended';
+    else if(S.pnRatio<1.10) st='🟡 Marginal';
+    else if(S.pnRatio<=1.30) st='🟢 Recommended';
+    else st='🔵 Over-balanced';
+  }
+  document.getElementById('sum-balance').innerHTML =
+    srow('Cathode Areal Cap',S.cAreal,'mAh/cm²')+
+    srow('Anode Areal Cap',S.aAreal,'mAh/cm²')+
+    srow('N/P Ratio',S.pnRatio,'')+
+    '<div class="sum-row"><span class="sk">Balance Status</span><span class="sv">'+st+'</span></div>';
+}
+
+// ════ COLLECT DATA FOR EXPORT ════
+function collectData(){
+  const now = new Date();
+  return {
+    expNum:   document.getElementById('g-expnum').value||'—',
+    expName:  document.getElementById('g-expname').value||'—',
+    userName: document.getElementById('g-user').value||currentUser||'Guest',
+    date:     now.toLocaleDateString(),
+    ts:       now.toLocaleString(),
+    chem:     document.getElementById('g-chem').value,
+    rows:[
+      ['CATHODE','',''],
+      ['Avg Disc Weight', S.cAvg!=null?S.cAvg.toFixed(4):'N/A','mg'],
+      ['Coating Weight',  S.cCoat!=null?S.cCoat.toFixed(4):'N/A','mg'],
+      ['Loading',         S.cLoad!=null?S.cLoad.toFixed(4):'N/A','mg/cm²'],
+      ['Electrode Density',S.cElecDens!=null?S.cElecDens.toFixed(4):'N/A','g/cm³'],
+      ['Porosity',        S.cPorosity!=null?S.cPorosity.toFixed(2):'N/A','%'],
+      ['Areal Capacity',  S.cAreal!=null?S.cAreal.toFixed(4):'N/A','mAh/cm²'],
+      ['ANODE','',''],
+      ['Avg Disc Weight', S.aAvg!=null?S.aAvg.toFixed(4):'N/A','mg'],
+      ['Coating Weight',  S.aCoat!=null?S.aCoat.toFixed(4):'N/A','mg'],
+      ['Loading',         S.aLoad!=null?S.aLoad.toFixed(4):'N/A','mg/cm²'],
+      ['Electrode Density',S.aElecDens!=null?S.aElecDens.toFixed(4):'N/A','g/cm³'],
+      ['Porosity',        S.aPorosity!=null?S.aPorosity.toFixed(2):'N/A','%'],
+      ['Areal Capacity',  S.aAreal!=null?S.aAreal.toFixed(4):'N/A','mAh/cm²'],
+      ['CELL BALANCE','',''],
+      ['N/P Ratio',       S.pnRatio!=null?S.pnRatio.toFixed(4):'N/A',''],
+    ]
+  };
+}
+
+// ════ EXPORT CSV ════
+function exportCSV(){
+  const d = collectData();
+  const hdr = [
+    '"Battery Minds by KSP","",""',
+    '"Experiment: '+d.expNum+' — '+d.expName+'","",""',
+    '"User: '+d.userName+'","",""',
+    '"Date: '+d.date+'","",""',
+    '"Timestamp: '+d.ts+'","",""',
+    '"Chemistry: '+d.chem+'","",""',
+    '"Parameter","Value","Unit"',
+  ];
+  const rows = d.rows.map(r => r.map(c => '"'+c+'"').join(','));
+  const ftr  = ['"Designed and Developed by Kalangi Sai Praneeth with the assistance of AI","",""'];
+  const blob = new Blob([[...hdr,...rows,...ftr].join('\n')],{type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'BatteryMinds_'+d.expNum+'_'+d.date.replace(/\//g,'-')+'.csv';
+  a.click();
+  toast('CSV exported');
+}
+
+// ════ EXPORT EXCEL ════
+function exportExcel(){
+  const d = collectData();
+  const lines = [
+    'Battery Minds by KSP\t\t',
+    'Experiment:\t'+d.expNum+'\t'+d.expName,
+    'User:\t'+d.userName+'\t',
+    'Date:\t'+d.date+'\t',
+    'Timestamp:\t'+d.ts+'\t',
+    'Chemistry:\t'+d.chem+'\t',
+    'Parameter\tValue\tUnit',
+    ...d.rows.map(r=>r.join('\t')),
+    '\t\t',
+    'Designed and Developed by Kalangi Sai Praneeth with the assistance of AI\t\t',
+  ];
+  const blob = new Blob([lines.join('\n')],{type:'text/tab-separated-values'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'BatteryMinds_'+d.expNum+'.xls';
+  a.click();
+  toast('Excel exported');
+}
+
+// ════ EXPORT PDF ════
+function exportPDF(){
+  const d = collectData();
+  const trs = d.rows.map(([l,v,u]) => {
+    if(v==='') return '<tr style="background:#daeef9"><td colspan="3" style="font-weight:900;padding:8px;color:#004a70">'+l+'</td></tr>';
+    return '<tr><td>'+l+'</td><td style="font-weight:800;color:#0077b5">'+v+'</td><td>'+u+'</td></tr>';
+  }).join('');
+  const w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Battery Minds Report</title><style>'+
+    'body{font-family:Segoe UI,Arial,sans-serif;padding:30px;color:#111;max-width:820px;margin:auto}'+
+    'h1{font-size:24px;font-weight:900;color:#0077b5;margin-bottom:2px}'+
+    '.sub{font-size:12px;color:#555;margin-bottom:18px;font-weight:600}'+
+    '.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}'+
+    '.meta div{background:#e8f4fd;padding:8px 12px;border-radius:6px;border-left:4px solid #0077b5;font-size:13px}'+
+    '.meta span{font-weight:800}'+
+    'table{width:100%;border-collapse:collapse;margin-top:14px}'+
+    'th{background:#0077b5;color:#fff;padding:10px 14px;text-align:left;font-size:13px;font-weight:700}'+
+    'td{padding:9px 14px;border-bottom:1px solid #cde;font-size:13px;font-weight:500}'+
+    'tr:hover td{background:#f0f8ff}'+
+    '.footer{margin-top:30px;font-size:11px;color:#888;text-align:center;border-top:1px solid #cde;padding-top:16px}'+
+    '.ksp{color:#0077b5;font-weight:900}'+
+    '</style></head><body>'+
+    '<h1>⚡ Battery Minds Calculator — Report</h1>'+
+    '<div class="sub">Battery Minds by KSP &nbsp;·&nbsp; Version SP1.0.0</div>'+
+    '<div class="meta">'+
+    '<div>Experiment #: <span>'+d.expNum+'</span></div>'+
+    '<div>Name: <span>'+d.expName+'</span></div>'+
+    '<div>User: <span>'+d.userName+'</span></div>'+
+    '<div>Date: <span>'+d.date+'</span></div>'+
+    '<div>Timestamp: <span>'+d.ts+'</span></div>'+
+    '<div>Chemistry: <span>'+d.chem+'</span></div>'+
+    '</div>'+
+    '<table><thead><tr><th>Parameter</th><th>Value</th><th>Unit</th></tr></thead>'+
+    '<tbody>'+trs+'</tbody></table>'+
+    '<div class="footer"><span class="ksp">Designed and Developed by Kalangi Sai Praneeth with the assistance of AI</span><br>Battery Minds by KSP — SP1.0.0</div>'+
+    '</body></html>');
+  w.document.close(); w.print();
+  toast('PDF opened for printing');
+}
+
+// ════ RESET ════
+function resetAll(){
+  document.querySelectorAll('input[type="number"],textarea').forEach(e => {
+    if(!['l-c-area','l-a-area'].includes(e.id)) e.value='';
+    delete e.dataset.userEdited;
+  });
+  Object.keys(S).forEach(k => delete S[k]);
+  document.querySelectorAll('.ri-value').forEach(e => e.textContent='—');
+  document.querySelectorAll('.ri-status').forEach(e => { e.className='ri-status'; e.textContent=''; });
+  document.querySelectorAll('.rec').forEach(e => e.style.display='none');
+  const pnd = document.getElementById('pn-display');
+  if(pnd){ pnd.className='pn-display'; }
+  document.getElementById('pn-val').textContent='—';
+  document.getElementById('pn-stat').textContent='Enter values above';
+  document.getElementById('pouch-results').innerHTML='<div style="color:var(--ink3);font-size:.9rem;font-weight:600;padding:20px 0">Enter dimensions and electrode parameters to compute design.</div>';
+  document.getElementById('cyl-results').innerHTML='<div style="color:var(--ink3);font-size:.9rem;font-weight:600;padding:20px 0">Select format and enter electrode parameters to compute roll dimensions.</div>';
+  updateSummary();
+  toast('All values reset');
+}
+
+// ════ TOAST ════
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+// ════ INIT ════
+buildMat();
+updateSummary();
+calcM3();
+onChemChange();
+cylPreset();
+</script>
+</body>
+</html>
